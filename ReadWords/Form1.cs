@@ -35,8 +35,8 @@ namespace ReadWords
         async void UploadToYaDisk()
         {
             string oauth = "AQAAAAAHhRICAAWZSNtoJ5RZgkjxi7cp1fye9VE";
-            string diskFileName = "test/Мероприятия ко дню 1.docx";
-            string myFileName = @"D:\dnlds\Мероприятия2.docx";
+            string diskFileName = "test/Итоги викторины. Протоколы жюри по возрастным номинациям.pdf";
+            string myFileName = @"D:\dnlds\Итоги викторины. Протоколы жюри по возрастным номинациям.pdf";
 
 
             YandexDiskRest disk = new YandexDiskRest(oauth);
@@ -64,7 +64,7 @@ namespace ReadWords
                 textBox.Text += string.Format(err.Message) + "\r\n";
 
             ResInfo filesByPublicFields = disk.GetResourcePublic(
-                2,
+                3,
                 null,
                 new ResFields[] {
                     ResFields.Name,
