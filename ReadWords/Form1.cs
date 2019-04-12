@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 using YandexDiskNET;
 
 
@@ -85,6 +86,45 @@ namespace ReadWords
             else
                 textBox.Text += string.Format(filesByPublicFields.ErrorResponse.Message);
 
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            
+            if (openFile1.ShowDialog() == DialogResult.OK)
+            {
+                // Open document 
+                string originalfilename = System.IO.Path.GetFullPath(openFile1.FileName);
+                
+                if (openFile1.CheckFileExists && new[] { ".docx", ".doc", ".txt", ".rtf" }.Contains(Path.GetExtension(originalfilename).ToLower()))
+                {
+                   // Microsoft.Office.Interop.Word.Application wordObject = new Microsoft.Office.Interop.Word.Application();
+                    object File = originalfilename;
+                    object nullobject = System.Reflection.Missing.Value;
+                    Microsoft.Office.Interop.Word.Application wordobject = new Microsoft.Office.Interop.Word.Application();
+                    wordobject.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
+                    Microsoft.Office.Interop.Word._Document docs = wordobject.Documents.Open(ref File, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject);
+                    //docs.ActiveWindow.Selection.WholeStory();
+                    
+                    //docs.ActiveWindow.Selection.Copy();
+
+                    Microsoft.Office.Interop.Word.Range wordContentRange = docs.Content;
+                    string textFromWordDocument = wordContentRange.Text;
+                    /* for (int par = 1; par <= docs.Paragraphs.Count; par++)
+                    {
+                        //richTextBox1.Text = par.ToString();
+                        // richTextBox1.Text = docs.ActiveWindow.Selection.ToString();
+                    } */
+                    richTextBox1.Text = textFromWordDocument; 
+                    //richTextBox1.Paste();
+
+                    docs.Close(ref nullobject, ref nullobject, ref nullobject);
+                    wordobject.Quit(ref nullobject, ref nullobject, ref nullobject);
+
+
+                    MessageBox.Show("file loaded");
+                }
+            }
         }
     }
 }
