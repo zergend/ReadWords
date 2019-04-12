@@ -109,13 +109,26 @@ namespace ReadWords
                     //docs.ActiveWindow.Selection.Copy();
 
                     Microsoft.Office.Interop.Word.Range wordContentRange = docs.Content;
-                    string textFromWordDocument = wordContentRange.Text;
-                    /* for (int par = 1; par <= docs.Paragraphs.Count; par++)
+
+                    string textFromWordDocument = string.Empty;
+
+                    for (int i = 1; i <= wordContentRange.Paragraphs.Count; i++ )
                     {
-                        //richTextBox1.Text = par.ToString();
-                        // richTextBox1.Text = docs.ActiveWindow.Selection.ToString();
-                    } */
-                    richTextBox1.Text = textFromWordDocument; 
+                        textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
+                        if (textFromWordDocument.Trim() == string.Empty)
+                        {
+                            textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
+                        } else
+                        {
+                            if ()
+                                tableLayoutPanel1.SetRow()
+                            textBox.Text += i.ToString() + ": " + textFromWordDocument + "\r\n";
+                            
+                        }
+                        
+                    }
+                    //richTextBox1.Text = textFromWordDocument;                   
+
                     //richTextBox1.Paste();
 
                     docs.Close(ref nullobject, ref nullobject, ref nullobject);
