@@ -97,9 +97,9 @@ namespace ReadWords
                 string originalfilename = System.IO.Path.GetFullPath(openFile1.FileName);
 
                 /* countTitle: № поиска подстроки = № элемента в заголовке
-                 * 1 - тип документа (начальное значение)
+                 * 1 - тип документа (начальное значение) 
                  * 2 - дата документа   \
-                 *   +                   > как правило, в одном абзаце!!!
+                 *   +                   > как правило, в одном абзаце !!!
                  *   - номер документа  /
                  * 3 - название документа
                  */
@@ -122,6 +122,7 @@ namespace ReadWords
 
                     for (int i = 1; i <= wordContentRange.Paragraphs.Count; i++)
                     {
+                        // !!! концом абзаца могут притворяться разрывы строк или куча пробелов
                         textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
                         if (textFromWordDocument.Trim() == string.Empty)
                         {
