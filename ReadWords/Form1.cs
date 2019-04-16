@@ -26,7 +26,7 @@ namespace ReadWords
         {
             UploadToYaDisk();
         }
-    
+
         private void BtnClose_Click(object sender, EventArgs e)
         {
             Application.Exit();
@@ -89,7 +89,8 @@ namespace ReadWords
 
         private void Button2_Click(object sender, EventArgs e)
         {
-            
+            int countRow = 0;
+
             if (openFile1.ShowDialog() == DialogResult.OK)
             {
                 // Open document 
@@ -102,7 +103,7 @@ namespace ReadWords
                  *   - номер документа  /
                  * 3 - название документа
                  */
-                int countTitle = 1; 
+                int countTitle = 1;
 
                 if (openFile1.CheckFileExists && new[] { ".docx", ".doc", ".txt", ".rtf" }.Contains(Path.GetExtension(originalfilename).ToLower()))
                 {
@@ -118,13 +119,14 @@ namespace ReadWords
                     string textFromWordDocument = string.Empty;
                     string strDocTitle = string.Empty;
 
-                    for (int i = 1; i <= wordContentRange.Paragraphs.Count; i++ )
+                    for (int i = 1; i <= wordContentRange.Paragraphs.Count; i++)
                     {
                         textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
                         if (textFromWordDocument.Trim() == string.Empty)
                         {
                             textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
-                        } else
+                        }
+                        else
                         {
                             // textBox.Text += i.ToString() + ": " + textFromWordDocument + "\r\n";
                             string title = docTitle(textFromWordDocument, countTitle);
@@ -151,10 +153,17 @@ namespace ReadWords
                             */
 
                         }
-                        
+
                     }
 
                     textBox.Text += strDocTitle + "\r\n";
+
+                    if (countTitle > 2)
+                    {
+                        listBox1.Items.Insert(countRow, strDocTitle);
+                        countRow++;
+                    }
+
 
                     docs.Close(ref nullobject, ref nullobject, ref nullobject);
                     wordobject.Quit(ref nullobject, ref nullobject, ref nullobject);
@@ -177,7 +186,7 @@ namespace ReadWords
                         foreach (Match match in matches1)
                             sT += " " + match.Value;
                         sT = sT.Trim();
-                        return sT.ToUpper();                        
+                        return sT.ToUpper();
                     }
                     else
                     {
@@ -185,7 +194,7 @@ namespace ReadWords
                     }
                 case 2:
                     Regex regex3 = new Regex(@"(\d+)\D*(январ[ьея]|феврал[ьея]|март[еа]?|апрел[ьея]|ма[йея]|ию[нл][яье]|август[еа]?|(?:сент|окт|но|дек)[ая]бр[яье])(\D*\d+)\D*(\d+)", RegexOptions.IgnoreCase);
-                    
+
                     MatchCollection matches3 = regex3.Matches(s);
                     if (matches3.Count > 0)
                     {
@@ -205,7 +214,7 @@ namespace ReadWords
                     return " " + s.Trim();
                 default:
                     return string.Empty;
-            }            
+            }
         }
-    }
+    }     
 }
