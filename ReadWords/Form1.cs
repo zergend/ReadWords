@@ -103,6 +103,7 @@ namespace ReadWords
                  *   - номер документа  /
                  * 3 - название документа
                  */
+
                 int countTitle = 1;
 
                 if (openFile1.CheckFileExists && new[] { ".docx", ".doc", ".txt", ".rtf" }.Contains(Path.GetExtension(originalfilename).ToLower()))
@@ -124,11 +125,10 @@ namespace ReadWords
                         textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
                         if (textFromWordDocument.Trim() == string.Empty)
                         {
-                            textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
+                            // textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
                         }
                         else
                         {
-                            // textBox.Text += i.ToString() + ": " + textFromWordDocument + "\r\n";
                             string title = docTitle(textFromWordDocument, countTitle);
 
                             switch (countTitle)
@@ -147,22 +147,25 @@ namespace ReadWords
                                     break;
                             }
 
-                            /* if ()
-                                tableLayoutPanel1.SetRow()
-                            textBox.Text += i.ToString() + ": " + textFromWordDocument + "\r\n";
-                            */
+                            if (countTitle > 3)
+                            {
+                                listBox1.Items.Insert(countRow, strDocTitle);
+                                countRow++;
+                                break;
+                            }
+
+                            if (i > 25)
+                            {
+                                listBox1.Items.Insert(countRow, "? не НМПА ?");
+                                countRow++;
+                                break;
+                            }
 
                         }
 
                     }
 
                     textBox.Text += strDocTitle + "\r\n";
-
-                    if (countTitle > 2)
-                    {
-                        listBox1.Items.Insert(countRow, strDocTitle);
-                        countRow++;
-                    }
 
 
                     docs.Close(ref nullobject, ref nullobject, ref nullobject);
@@ -176,14 +179,16 @@ namespace ReadWords
         static string docTitle(string s, int i)
         {
             string sT = string.Empty;
+            Regex regex;
+            MatchCollection matches;
             switch (i)
             {
                 case 1:
-                    Regex regex1 = new Regex(@"решен(\w*)|постановл(\w*)|распоряж(\w*)");
-                    MatchCollection matches1 = regex1.Matches(s.ToLower());
-                    if (matches1.Count > 0)
+                    regex = new Regex(@"решен(\w*)|постановл(\w*)|распоряж(\w*)");
+                    matches = regex.Matches(s.ToLower());
+                    if (matches.Count > 0)
                     {
-                        foreach (Match match in matches1)
+                        foreach (Match match in matches)
                             sT += " " + match.Value;
                         sT = sT.Trim();
                         return sT.ToUpper();
@@ -193,12 +198,11 @@ namespace ReadWords
                         return string.Empty;
                     }
                 case 2:
-                    Regex regex3 = new Regex(@"(\d+)\D*(январ[ьея]|феврал[ьея]|март[еа]?|апрел[ьея]|ма[йея]|ию[нл][яье]|август[еа]?|(?:сент|окт|но|дек)[ая]бр[яье])(\D*\d+)\D*(\d+)", RegexOptions.IgnoreCase);
-
-                    MatchCollection matches3 = regex3.Matches(s);
-                    if (matches3.Count > 0)
+                    regex = new Regex(@"(\d+)\D*(январ[ьея]|феврал[ьея]|март[еа]?|апрел[ьея]|ма[йея]|ию[нл][яье]|август[еа]?|(?:сент|окт|но|дек)[ая]бр[яье])(\D*\d+)\D*(\d+)", RegexOptions.IgnoreCase);
+                    matches = regex.Matches(s);
+                    if (matches.Count > 0)
                     {
-                        foreach (Match match in matches3)
+                        foreach (Match match in matches)
                         {
                             GroupCollection groups = match.Groups;
                             sT += " № " + groups[4].Value.Trim();
@@ -215,6 +219,11 @@ namespace ReadWords
                 default:
                     return string.Empty;
             }
+        }
+
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = listBox1.SelectedItem.ToString();
         }
     }     
 }
