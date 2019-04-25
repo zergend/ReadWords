@@ -177,6 +177,48 @@ namespace ReadWords
             }
         }
 
+
+
+        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            textBox1.Text = listBox1.SelectedItem.ToString();
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) // (openFile1.ShowDialog() == DialogResult.OK)
+            {
+                textFolderAT.Text = folderBrowserDialog1.SelectedPath;
+                string htmlAT = toAT(folderBrowserDialog1.SelectedPath);
+                MessageBox.Show(htmlAT);
+            }
+        }
+
+        // готовим фото + текст для публикации на atkorablino.ru
+        // ресайз фото => загрузка на ftp => 
+        // => получение ссылок на файлы => формирование html-кода с картинками => 
+        // => добавление текста => копирование в буфер???
+        static string toAT(string s)
+        {
+            return @"<p>25 апреля было проведено мероприятие – Единый урок  на тему «Моей семьи война коснулась», подготовленная  преподавателем Ольгой Юрьевной Елмановой. Урок начался  с показа  документальных кадров о начале Великой Отечественной войны. В ходе изложения материала студенты  были ознакомлены с основными  историческими фактами и итогами войны. Основной акцент был сделан на то, что война коснулась каждой семьи. В презентации были показаны материалы об участниках Великой Отечественной войны – жителей нашего района.</p>
+<p>На уроке звучали песни военных лет, показаны отрывки из художественных фильмов о войне. Студенты были ориентированы на то, чтобы быть достойными своих предков – участников войны и сделать все возможное для мира на земле.</p>
+<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-001.jpg"" alt="""" width=""850"" /></p>
+<hr id=""system-readmore"" />
+<p> </p>
+<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-002.jpg"" alt="""" width=""850"" /></p>
+<p> </p>
+<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-003.jpg"" alt="""" width=""850"" /></p>
+<p> </p>
+<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-004.jpg"" alt="""" width=""850"" /></p>
+<p> </p>
+<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-005.jpg"" alt="""" width=""850"" /></p>
+<p> </p>";
+        }
+
+        ////////////////////
+        /// functions
+        /// 
         static string docTitle(string s, int i)
         {
             string sT = string.Empty;
@@ -220,11 +262,6 @@ namespace ReadWords
                 default:
                     return string.Empty;
             }
-        }
-
-        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            textBox1.Text = listBox1.SelectedItem.ToString();
         }
     }     
 }
