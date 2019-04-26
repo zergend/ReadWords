@@ -186,22 +186,53 @@ namespace ReadWords
 
         private void Button3_Click(object sender, EventArgs e)
         {
-
+            int countRow = 0;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) // (openFile1.ShowDialog() == DialogResult.OK)
             {
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
-                string htmlAT = toAT(folderBrowserDialog1.SelectedPath);
-                MessageBox.Show(htmlAT);
+                string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
+                listBox2.Items.Clear();
+                foreach (string s in htmlAT)
+                {
+                    listBox2.Items.Insert(countRow, s);
+                    countRow++;
+                }
+                MessageBox.Show("всё закончилось!");
             }
+            
         }
 
         // готовим фото + текст для публикации на atkorablino.ru
         // ресайз фото => загрузка на ftp => 
         // => получение ссылок на файлы => формирование html-кода с картинками => 
         // => добавление текста => копирование в буфер???
-        static string toAT(string s)
+        static string[] toAT(string dirName)
         {
-            return @"<p>25 апреля было проведено мероприятие – Единый урок  на тему «Моей семьи война коснулась», подготовленная  преподавателем Ольгой Юрьевной Елмановой. Урок начался  с показа  документальных кадров о начале Великой Отечественной войны. В ходе изложения материала студенты  были ознакомлены с основными  историческими фактами и итогами войны. Основной акцент был сделан на то, что война коснулась каждой семьи. В презентации были показаны материалы об участниках Великой Отечественной войны – жителей нашего района.</p>
+            string[] r = new string[1];
+            r[0] = "empty";
+            if (Directory.Exists(dirName))
+            {
+                /* Console.WriteLine("Подкаталоги:");
+                string[] dirs = Directory.GetDirectories(dirName);
+                foreach (string s in dirs)
+                {
+                    Console.WriteLine(s);
+                }
+                Console.WriteLine(); */
+
+                // Console.WriteLine("Файлы:");
+                string[] files = Directory.GetFiles(dirName);
+
+                string[] names = new string[files.Length];
+
+                for (int i = 0; i < files.Length; i++)
+                {
+                    names[i] = files[i];
+                }
+                return names;
+            }
+            else return r;
+            /* return @"<p>25 апреля было проведено мероприятие – Единый урок  на тему «Моей семьи война коснулась», подготовленная  преподавателем Ольгой Юрьевной Елмановой. Урок начался  с показа  документальных кадров о начале Великой Отечественной войны. В ходе изложения материала студенты  были ознакомлены с основными  историческими фактами и итогами войны. Основной акцент был сделан на то, что война коснулась каждой семьи. В презентации были показаны материалы об участниках Великой Отечественной войны – жителей нашего района.</p>
 <p>На уроке звучали песни военных лет, показаны отрывки из художественных фильмов о войне. Студенты были ориентированы на то, чтобы быть достойными своих предков – участников войны и сделать все возможное для мира на земле.</p>
 <p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-001.jpg"" alt="""" width=""850"" /></p>
 <hr id=""system-readmore"" />
@@ -213,7 +244,7 @@ namespace ReadWords
 <p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-004.jpg"" alt="""" width=""850"" /></p>
 <p> </p>
 <p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-005.jpg"" alt="""" width=""850"" /></p>
-<p> </p>";
+<p> </p>"; */
         }
 
         ////////////////////
@@ -261,6 +292,17 @@ namespace ReadWords
                     return " " + s.Trim();
                 default:
                     return string.Empty;
+            }
+        }
+
+        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
+            if (fileInf.Exists)
+            {
+                textBox2.Text = "Имя файла: {0}" + fileInf.Name + "\r\n";
+                textBox2.Text += "Размер: {0}" + fileInf.Length + "\r\n";
+                textBox2.Text += "Создан: {0}" + fileInf.CreationTime + "\r\n";
             }
         }
     }     
