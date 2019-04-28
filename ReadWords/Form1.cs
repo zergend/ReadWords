@@ -303,7 +303,28 @@ namespace ReadWords
                 textBox2.Text = "Имя файла: {0}" + fileInf.Name + "\r\n";
                 textBox2.Text += "Размер: {0}" + fileInf.Length + "\r\n";
                 textBox2.Text += "Создан: {0}" + fileInf.CreationTime + "\r\n";
+                try
+                {
+                    pictureBox1.Image = Image.FromFile(listBox2.SelectedItem.ToString());
+                }
+                catch
+                {                   
+                    pictureBox1.Image = pictureBox1.ErrorImage;
+                }
             }
         }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            if (listBox2.Items.Count > 0)
+            {
+                for (int i = 0; i< listBox2.Items.Count; i++)
+                {
+
+                }
+            }
+        }
+
+
     }     
 }
