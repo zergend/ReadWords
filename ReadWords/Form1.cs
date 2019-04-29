@@ -12,6 +12,8 @@ using System.Windows.Forms;
 
 using YandexDiskNET;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.Net;
 
 namespace ReadWords
 {
@@ -202,6 +204,60 @@ namespace ReadWords
             
         }
 
+        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
+            if (fileInf.Exists)
+            {
+                textBox2.Text = "Имя файла: {0}" + fileInf.Name + "\r\n";
+                textBox2.Text += "Размер: {0}" + fileInf.Length + "\r\n";
+                textBox2.Text += "Создан: {0}" + fileInf.CreationTime + "\r\n";
+                try
+                {
+                    pictureBox1.Image = Image.FromFile(listBox2.SelectedItem.ToString());
+                }
+                catch
+                {                   
+                    pictureBox1.Image = pictureBox1.ErrorImage;
+                }
+            }
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            if (listBox2.Items.Count > 0)
+            {
+                string s = string.Empty;
+                string dirName = textFolderAT.Text;
+                string newFolder = textFolderAT.Text;
+                ProcessStartInfo psi = new ProcessStartInfo();
+                //Имя запускаемого приложения
+                psi.FileName = @"P:\[-=pa=-]\IrfanView\i_view32.exe";
+
+                if (Directory.Exists(dirName))
+                {
+                    newFolder = dirName + @"\to_ftp\";
+                }
+
+                for (int i = 0; i < listBox2.Items.Count; i++)
+                {
+                    s = listBox2.Items[i].ToString();
+                    s += @" /resize_long=850 /aspectratio /resample /silent /convert=""" + newFolder + "outimage_" + i.ToString("d3") + @".jpg""";
+                    try
+                    {
+                        //команда, которую надо выполнить
+                        psi.Arguments = s;
+                        Process.Start(psi);
+                    }
+                    catch
+                    {
+                        pictureBox1.Image = pictureBox1.ErrorImage;
+                    }                    
+                }
+                MessageBox.Show("Картинки изменены!");
+            }
+        }
+
         // готовим фото + текст для публикации на atkorablino.ru
         // ресайз фото => загрузка на ftp => 
         // => получение ссылок на файлы => формирование html-кода с картинками => 
@@ -212,15 +268,13 @@ namespace ReadWords
             r[0] = "empty";
             if (Directory.Exists(dirName))
             {
-                /* Console.WriteLine("Подкаталоги:");
-                string[] dirs = Directory.GetDirectories(dirName);
-                foreach (string s in dirs)
-                {
-                    Console.WriteLine(s);
-                }
-                Console.WriteLine(); */
+                // Создаем объект FtpWebRequest
+                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://ftp.atkorablin.nichost.ru");
+                // устанавливаем метод на загрузку файлов
+                request.Method = WebRequestMethods.Ftp.DownloadFile;
+                //request.Credentials = new NetworkCredential("atkorablin_ftp0419", "vBgB0QVuoBvuP");
 
-                // Console.WriteLine("Файлы:");
+
                 string[] files = Directory.GetFiles(dirName);
 
                 string[] names = new string[files.Length];
@@ -245,6 +299,53 @@ namespace ReadWords
 <p> </p>
 <p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-005.jpg"" alt="""" width=""850"" /></p>
 <p> </p>"; */
+        }
+
+        // загружаем на FTP
+        private void FTPUploadFile(string filename)
+        {
+            FileInfo fileInf = new FileInfo(filename);
+            string uri = "ftp://" + "ftp.narod.ru" + "/" + fileInf.Name;
+            FtpWebRequest reqFTP;
+            // Создаем объект FtpWebRequest
+            reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + "ftp.atkorablin.nichost.ru" + "/atkorablino.ru/docs/images/" + fileInf.Name));
+            // Учетная запись
+            reqFTP.Credentials = new NetworkCredential("atkorablin_ftp0419", "vBgB0QVuoBvuP");            
+            reqFTP.KeepAlive = false;
+            // Задаем команду на закачку
+            reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
+            // Тип передачи файла
+            reqFTP.UseBinary = true;
+            // Сообщаем серверу о размере файла
+            reqFTP.ContentLength = fileInf.Length;
+            // Буффер в 2 кбайт
+            int buffLength = 2048;
+            byte[] buff = new byte[buffLength];
+            int contentLen;
+            // Файловый поток
+            FileStream fs = fileInf.OpenRead();
+            try
+            {
+                Stream strm = reqFTP.GetRequestStream();
+                // Читаем из потока по 2 кбайт
+                contentLen = fs.Read(buff, 0, buffLength);
+                // Пока файл не кончится
+                while (contentLen != 0)
+                {
+                    strm.Write(buff, 0, contentLen);
+                    contentLen = fs.Read(buff, 0, buffLength);
+                }
+                // Закрываем потоки
+                strm.Close();
+                fs.Close();
+            }
+            catch (Exception ex)
+            {
+
+                MessageBox.Show(ex.Message, "Ошибка");
+
+            }
+
         }
 
         ////////////////////
@@ -284,7 +385,6 @@ namespace ReadWords
                             sT += " " + groups[2].Value.Trim();
                             sT += " " + groups[3].Value.Trim();
                         }
-
                         sT = sT.ToLower();
                     }
                     return sT;
@@ -294,37 +394,5 @@ namespace ReadWords
                     return string.Empty;
             }
         }
-
-        private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
-            if (fileInf.Exists)
-            {
-                textBox2.Text = "Имя файла: {0}" + fileInf.Name + "\r\n";
-                textBox2.Text += "Размер: {0}" + fileInf.Length + "\r\n";
-                textBox2.Text += "Создан: {0}" + fileInf.CreationTime + "\r\n";
-                try
-                {
-                    pictureBox1.Image = Image.FromFile(listBox2.SelectedItem.ToString());
-                }
-                catch
-                {                   
-                    pictureBox1.Image = pictureBox1.ErrorImage;
-                }
-            }
-        }
-
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            if (listBox2.Items.Count > 0)
-            {
-                for (int i = 0; i< listBox2.Items.Count; i++)
-                {
-
-                }
-            }
-        }
-
-
     }     
 }
