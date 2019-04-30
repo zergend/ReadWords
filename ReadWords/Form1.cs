@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using WinSCP;
 
 using YandexDiskNET;
 using System.Text.RegularExpressions;
@@ -189,7 +189,7 @@ namespace ReadWords
         private void Button3_Click(object sender, EventArgs e)
         {
             int countRow = 0;
-            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) // (openFile1.ShowDialog() == DialogResult.OK)
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) 
             {
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
                 string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
@@ -199,7 +199,7 @@ namespace ReadWords
                     listBox2.Items.Insert(countRow, s);
                     countRow++;
                 }
-                MessageBox.Show("всё закончилось!");
+                // MessageBox.Show("всё закончилось!");
             }
             
         }
@@ -248,33 +248,36 @@ namespace ReadWords
                         //команда, которую надо выполнить
                         psi.Arguments = s;
                         Process.Start(psi);
+                        s = newFolder + "outimage_" + i.ToString("d3") + ".jpg";                        
                     }
                     catch
                     {
                         pictureBox1.Image = pictureBox1.ErrorImage;
                     }                    
                 }
-                MessageBox.Show("Картинки изменены!");
+
+                string res = string.Empty;
+                res = FTPUploadFile(newFolder);
+                if (res != string.Empty) {
+                    textBox2.Text = res;
+                    textBox2.SelectAll();
+                    textBox2.Copy();                    
+                    MessageBox.Show("Картинки изменены UND загружены!");
+                }
+                else
+                {
+                    MessageBox.Show("Картинки NOT загружены!");
+                }
+                //MessageBox.Show("Картинки изменены!");
             }
         }
 
-        // готовим фото + текст для публикации на atkorablino.ru
-        // ресайз фото => загрузка на ftp => 
-        // => получение ссылок на файлы => формирование html-кода с картинками => 
-        // => добавление текста => копирование в буфер???
         static string[] toAT(string dirName)
         {
             string[] r = new string[1];
             r[0] = "empty";
             if (Directory.Exists(dirName))
-            {
-                // Создаем объект FtpWebRequest
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create("ftp://ftp.atkorablin.nichost.ru");
-                // устанавливаем метод на загрузку файлов
-                request.Method = WebRequestMethods.Ftp.DownloadFile;
-                //request.Credentials = new NetworkCredential("atkorablin_ftp0419", "vBgB0QVuoBvuP");
-
-
+            {                
                 string[] files = Directory.GetFiles(dirName);
 
                 string[] names = new string[files.Length];
@@ -302,49 +305,68 @@ namespace ReadWords
         }
 
         // загружаем на FTP
-        private void FTPUploadFile(string filename)
+        private string FTPUploadFile(string newFolder)
         {
-            FileInfo fileInf = new FileInfo(filename);
-            string uri = "ftp://" + "ftp.narod.ru" + "/" + fileInf.Name;
-            FtpWebRequest reqFTP;
-            // Создаем объект FtpWebRequest
-            reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + "ftp.atkorablin.nichost.ru" + "/atkorablino.ru/docs/images/" + fileInf.Name));
-            // Учетная запись
-            reqFTP.Credentials = new NetworkCredential("atkorablin_ftp0419", "vBgB0QVuoBvuP");            
-            reqFTP.KeepAlive = false;
-            // Задаем команду на закачку
-            reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
-            // Тип передачи файла
-            reqFTP.UseBinary = true;
-            // Сообщаем серверу о размере файла
-            reqFTP.ContentLength = fileInf.Length;
-            // Буффер в 2 кбайт
-            int buffLength = 2048;
-            byte[] buff = new byte[buffLength];
-            int contentLen;
-            // Файловый поток
-            FileStream fs = fileInf.OpenRead();
+            string res = string.Empty;
             try
             {
-                Stream strm = reqFTP.GetRequestStream();
-                // Читаем из потока по 2 кбайт
-                contentLen = fs.Read(buff, 0, buffLength);
-                // Пока файл не кончится
-                while (contentLen != 0)
+                // Задать параметры сессии
+                SessionOptions sessionOptions = new SessionOptions
                 {
-                    strm.Write(buff, 0, contentLen);
-                    contentLen = fs.Read(buff, 0, buffLength);
+                    Protocol = Protocol.Ftp,
+                    HostName = "ftp.atkorablin.nichost.ru",
+                    PortNumber = 21,
+                    UserName = "atkorablin_ftp0419",
+                    Password = "vBgB0QVuoBvuP",
+                };
+
+                string localPath = newFolder;
+                string remotePath = "/atkorablino.ru/docs/images/test/";
+
+                using (Session session = new Session())
+                {
+                    // Connect
+                    session.Open(sessionOptions);
+
+                    // Enumerate files and directories to upload
+                    IEnumerable<FileSystemInfo> fileInfos =
+                        new DirectoryInfo(localPath).EnumerateFileSystemInfos(
+                            "*", SearchOption.AllDirectories);
+
+                    foreach (FileSystemInfo fileInfo in fileInfos)
+                    {
+                        string remoteFilePath =
+                            RemotePath.TranslateLocalPathToRemote(
+                                fileInfo.FullName, localPath, remotePath);
+                       
+                        if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
+                        {
+                            // Create remote subdirectory, if it does not exist yet
+                            if (!session.FileExists(remoteFilePath))
+                            {
+                                session.CreateDirectory(remoteFilePath);
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
+                            // Upload file and remove original
+                            session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();                            
+                            res += remoteFilePath + "\r\n";
+                        }
+                    }
                 }
-                // Закрываем потоки
-                strm.Close();
-                fs.Close();
+                res = res.Replace("/atkorablino.ru/docs/", @"<p><img style=""display: block; margin - left: auto; margin - right: auto; "" src="" / ");
+                res = res.Replace(".jpg", @""" width = ""850"" /></ p >");
+
+                return res;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-
-                MessageBox.Show(ex.Message, "Ошибка");
-
-            }
+                Console.WriteLine("Error: {0}", e);
+                return string.Empty;
+            }            
+            // MessageBox.Show("Загрузили");
 
         }
 
