@@ -37,25 +37,42 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textNew = new System.Windows.Forms.TextBox();
+            this.textOld = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.textPath = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.textPassword = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.textUname = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.textHost = new System.Windows.Forms.TextBox();
+            this.listHost = new System.Windows.Forms.ListBox();
+            this.listWidth = new System.Windows.Forms.ListBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textFileName = new System.Windows.Forms.TextBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.labelDrop = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.textFolderAT = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.button3 = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
             // Button1
             // 
-            this.Button1.Location = new System.Drawing.Point(12, 440);
+            this.Button1.Location = new System.Drawing.Point(12, 487);
             this.Button1.Name = "Button1";
             this.Button1.Size = new System.Drawing.Size(145, 41);
             this.Button1.TabIndex = 0;
@@ -73,7 +90,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(193, 440);
+            this.btnClose.Location = new System.Drawing.Point(593, 487);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(145, 41);
             this.btnClose.TabIndex = 2;
@@ -121,41 +138,204 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(635, 377);
+            this.tabControl1.Size = new System.Drawing.Size(726, 469);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.label6);
+            this.tabPage1.Controls.Add(this.textNew);
+            this.tabPage1.Controls.Add(this.textOld);
+            this.tabPage1.Controls.Add(this.label5);
+            this.tabPage1.Controls.Add(this.textPath);
+            this.tabPage1.Controls.Add(this.label4);
+            this.tabPage1.Controls.Add(this.textPassword);
+            this.tabPage1.Controls.Add(this.label3);
+            this.tabPage1.Controls.Add(this.textUname);
+            this.tabPage1.Controls.Add(this.label1);
+            this.tabPage1.Controls.Add(this.textHost);
+            this.tabPage1.Controls.Add(this.listHost);
+            this.tabPage1.Controls.Add(this.listWidth);
+            this.tabPage1.Controls.Add(this.label2);
+            this.tabPage1.Controls.Add(this.textFileName);
+            this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.button4);
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Controls.Add(this.listBox2);
             this.tabPage1.Controls.Add(this.textBox2);
-            this.tabPage1.Controls.Add(this.button3);
-            this.tabPage1.Controls.Add(this.label1);
             this.tabPage1.Controls.Add(this.textFolderAT);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(627, 351);
+            this.tabPage1.Size = new System.Drawing.Size(718, 443);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
+            this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(271, 340);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(87, 13);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "replace old/new:";
+            // 
+            // textNew
+            // 
+            this.textNew.Location = new System.Drawing.Point(268, 401);
+            this.textNew.Multiline = true;
+            this.textNew.Name = "textNew";
+            this.textNew.Size = new System.Drawing.Size(224, 35);
+            this.textNew.TabIndex = 22;
+            // 
+            // textOld
+            // 
+            this.textOld.Location = new System.Drawing.Point(268, 356);
+            this.textOld.Multiline = true;
+            this.textOld.Name = "textOld";
+            this.textOld.Size = new System.Drawing.Size(224, 39);
+            this.textOld.TabIndex = 21;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(503, 340);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(67, 13);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "remote Path:";
+            // 
+            // textPath
+            // 
+            this.textPath.Location = new System.Drawing.Point(500, 356);
+            this.textPath.Multiline = true;
+            this.textPath.Name = "textPath";
+            this.textPath.Size = new System.Drawing.Size(210, 39);
+            this.textPath.TabIndex = 19;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(503, 297);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(55, 13);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "password:";
+            // 
+            // textPassword
+            // 
+            this.textPassword.Location = new System.Drawing.Point(500, 313);
+            this.textPassword.Name = "textPassword";
+            this.textPassword.PasswordChar = '*';
+            this.textPassword.Size = new System.Drawing.Size(210, 20);
+            this.textPassword.TabIndex = 17;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(503, 254);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(36, 13);
+            this.label3.TabIndex = 16;
+            this.label3.Text = "name:";
+            // 
+            // textUname
+            // 
+            this.textUname.Location = new System.Drawing.Point(500, 270);
+            this.textUname.Name = "textUname";
+            this.textUname.Size = new System.Drawing.Size(210, 20);
+            this.textUname.TabIndex = 15;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(503, 211);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(30, 13);
+            this.label1.TabIndex = 14;
+            this.label1.Text = "host:";
+            // 
+            // textHost
+            // 
+            this.textHost.Location = new System.Drawing.Point(500, 227);
+            this.textHost.Name = "textHost";
+            this.textHost.Size = new System.Drawing.Size(210, 20);
+            this.textHost.TabIndex = 13;
+            // 
+            // listHost
+            // 
+            this.listHost.FormattingEnabled = true;
+            this.listHost.Location = new System.Drawing.Point(500, 134);
+            this.listHost.Name = "listHost";
+            this.listHost.Size = new System.Drawing.Size(210, 69);
+            this.listHost.TabIndex = 12;
+            this.listHost.SelectedIndexChanged += new System.EventHandler(this.ListHost_SelectedIndexChanged);
+            // 
+            // listWidth
+            // 
+            this.listWidth.FormattingEnabled = true;
+            this.listWidth.Location = new System.Drawing.Point(500, 33);
+            this.listWidth.Name = "listWidth";
+            this.listWidth.Size = new System.Drawing.Size(210, 95);
+            this.listWidth.TabIndex = 11;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(496, 6);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(67, 13);
+            this.label2.TabIndex = 10;
+            this.label2.Text = "Имя файла:";
+            // 
+            // textFileName
+            // 
+            this.textFileName.Location = new System.Drawing.Point(569, 6);
+            this.textFileName.Name = "textFileName";
+            this.textFileName.Size = new System.Drawing.Size(141, 20);
+            this.textFileName.TabIndex = 9;
+            // 
+            // panel1
+            // 
+            this.panel1.AllowDrop = true;
+            this.panel1.BackColor = System.Drawing.SystemColors.ControlLight;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.labelDrop);
+            this.panel1.Location = new System.Drawing.Point(6, 6);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(488, 122);
+            this.panel1.TabIndex = 7;
+            this.panel1.Click += new System.EventHandler(this.Panel1_Click);
+            this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.Panel1_DragDrop);
+            this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Panel1_DragEnter);
+            this.panel1.DragLeave += new System.EventHandler(this.Panel1_DragLeave);
+            // 
+            // labelDrop
+            // 
+            this.labelDrop.Location = new System.Drawing.Point(1, 52);
+            this.labelDrop.Name = "labelDrop";
+            this.labelDrop.Size = new System.Drawing.Size(484, 14);
+            this.labelDrop.TabIndex = 0;
+            this.labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
+            this.labelDrop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(478, 312);
+            this.button4.Location = new System.Drawing.Point(607, 413);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(103, 23);
             this.button4.TabIndex = 6;
-            this.button4.Text = "button4";
+            this.button4.Text = "Resize+Upload";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(354, 160);
+            this.pictureBox1.BackColor = System.Drawing.Color.DimGray;
+            this.pictureBox1.Location = new System.Drawing.Point(268, 230);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(227, 135);
+            this.pictureBox1.Size = new System.Drawing.Size(226, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -163,44 +343,25 @@
             // listBox2
             // 
             this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(9, 45);
+            this.listBox2.Location = new System.Drawing.Point(6, 160);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(328, 290);
+            this.listBox2.Size = new System.Drawing.Size(257, 277);
             this.listBox2.TabIndex = 4;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.ListBox2_SelectedIndexChanged);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(354, 45);
+            this.textBox2.Location = new System.Drawing.Point(268, 134);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(227, 109);
+            this.textBox2.Size = new System.Drawing.Size(226, 90);
             this.textBox2.TabIndex = 3;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(587, 9);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(27, 21);
-            this.button3.TabIndex = 2;
-            this.button3.Text = "...";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.Button3_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Папка:";
             // 
             // textFolderAT
             // 
-            this.textFolderAT.Location = new System.Drawing.Point(51, 9);
+            this.textFolderAT.Location = new System.Drawing.Point(6, 134);
             this.textFolderAT.Name = "textFolderAT";
-            this.textFolderAT.Size = new System.Drawing.Size(530, 20);
+            this.textFolderAT.Size = new System.Drawing.Size(257, 20);
             this.textFolderAT.TabIndex = 0;
             // 
             // tabPage2
@@ -212,9 +373,9 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(627, 351);
+            this.tabPage2.Size = new System.Drawing.Size(718, 443);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
+            this.tabPage2.Text = "Обработка Word";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
@@ -222,24 +383,38 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(627, 351);
+            this.tabPage3.Size = new System.Drawing.Size(718, 443);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(204, 487);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(152, 41);
+            this.button3.TabIndex = 12;
+            this.button3.Text = "test Wordpress";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.Button3_Click_1);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(668, 503);
+            this.ClientSize = new System.Drawing.Size(749, 540);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.Button1);
             this.Name = "Form1";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
@@ -258,8 +433,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textFolderAT;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
@@ -268,6 +441,24 @@
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Label labelDrop;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textFileName;
+        private System.Windows.Forms.ListBox listWidth;
+        private System.Windows.Forms.ListBox listHost;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox textPath;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox textPassword;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textUname;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textHost;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox textNew;
+        private System.Windows.Forms.TextBox textOld;
+        private System.Windows.Forms.Button button3;
     }
 }
 

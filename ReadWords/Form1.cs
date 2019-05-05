@@ -6,6 +6,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WinSCP;
@@ -14,6 +15,9 @@ using YandexDiskNET;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Net;
+using WordPressPCL;
+using WordPressPCL.Models;
+using MySql.Data.MySqlClient;
 
 namespace ReadWords
 {
@@ -188,17 +192,13 @@ namespace ReadWords
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            int countRow = 0;
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) 
             {
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
                 string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
-                {
-                    listBox2.Items.Insert(countRow, s);
-                    countRow++;
-                }
+                    listBox2.Items.Add(s);                   
                 // MessageBox.Show("всё закончилось!");
             }
             
@@ -232,23 +232,26 @@ namespace ReadWords
                 string newFolder = textFolderAT.Text;
                 ProcessStartInfo psi = new ProcessStartInfo();
                 //Имя запускаемого приложения
-                psi.FileName = @"P:\[-=pa=-]\IrfanView\i_view32.exe";
+                psi.FileName = @"C:\IrfanView\i_view32.exe";
 
                 if (Directory.Exists(dirName))
                 {
                     newFolder = dirName + @"\to_ftp\";
                 }
-
+                int nFile = 0;
+                string px = listWidth.SelectedItem.ToString();
                 for (int i = 0; i < listBox2.Items.Count; i++)
                 {
                     s = listBox2.Items[i].ToString();
-                    s += @" /resize_long=850 /aspectratio /resample /silent /convert=""" + newFolder + "outimage_" + i.ToString("d3") + @".jpg""";
+                    nFile = i + 1;
+                     
+                    s += @" /resize=(" + px + @", 0) /aspectratio /resample /silent /convert=""" + newFolder + textFileName.Text + nFile.ToString("d3") + @".jpg""";
                     try
                     {
                         //команда, которую надо выполнить
                         psi.Arguments = s;
                         Process.Start(psi);
-                        s = newFolder + "outimage_" + i.ToString("d3") + ".jpg";                        
+                        s = newFolder + textFileName.Text + nFile.ToString("d3") + ".jpg";                        
                     }
                     catch
                     {
@@ -257,7 +260,14 @@ namespace ReadWords
                 }
 
                 string res = string.Empty;
-                res = FTPUploadFile(newFolder);
+                res = FTPUploadFile(newFolder, 
+                                    textHost.Text, 
+                                    textUname.Text, 
+                                    textPassword.Text, 
+                                    textPath.Text, 
+                                    textOld.Text,
+                                    textNew.Text,
+                                    px);
                 if (res != string.Empty) {
                     textBox2.Text = res;
                     textBox2.SelectAll();
@@ -268,7 +278,6 @@ namespace ReadWords
                 {
                     MessageBox.Show("Картинки NOT загружены!");
                 }
-                //MessageBox.Show("Картинки изменены!");
             }
         }
 
@@ -289,23 +298,10 @@ namespace ReadWords
                 return names;
             }
             else return r;
-            /* return @"<p>25 апреля было проведено мероприятие – Единый урок  на тему «Моей семьи война коснулась», подготовленная  преподавателем Ольгой Юрьевной Елмановой. Урок начался  с показа  документальных кадров о начале Великой Отечественной войны. В ходе изложения материала студенты  были ознакомлены с основными  историческими фактами и итогами войны. Основной акцент был сделан на то, что война коснулась каждой семьи. В презентации были показаны материалы об участниках Великой Отечественной войны – жителей нашего района.</p>
-<p>На уроке звучали песни военных лет, показаны отрывки из художественных фильмов о войне. Студенты были ориентированы на то, чтобы быть достойными своих предков – участников войны и сделать все возможное для мира на земле.</p>
-<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-001.jpg"" alt="""" width=""850"" /></p>
-<hr id=""system-readmore"" />
-<p> </p>
-<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-002.jpg"" alt="""" width=""850"" /></p>
-<p> </p>
-<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-003.jpg"" alt="""" width=""850"" /></p>
-<p> </p>
-<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-004.jpg"" alt="""" width=""850"" /></p>
-<p> </p>
-<p><img style=""display: block; margin-left: auto; margin-right: auto;"" src=""images/042019-news/urok-25042019-005.jpg"" alt="""" width=""850"" /></p>
-<p> </p>"; */
         }
 
         // загружаем на FTP
-        private string FTPUploadFile(string newFolder)
+        private string FTPUploadFile(string newFolder, string hN, string uN, string pW, string rP, string replaceOld, string replaceNew, string pxW)
         {
             string res = string.Empty;
             try
@@ -314,14 +310,14 @@ namespace ReadWords
                 SessionOptions sessionOptions = new SessionOptions
                 {
                     Protocol = Protocol.Ftp,
-                    HostName = "ftp.atkorablin.nichost.ru",
+                    HostName = hN,
                     PortNumber = 21,
-                    UserName = "atkorablin_ftp0419",
-                    Password = "vBgB0QVuoBvuP",
+                    UserName = uN,
+                    Password = pW,
                 };
 
                 string localPath = newFolder;
-                string remotePath = "/atkorablino.ru/docs/images/test/";
+                string remotePath = rP;
 
                 using (Session session = new Session())
                 {
@@ -349,15 +345,15 @@ namespace ReadWords
                         }
                         else
                         {
-                            Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
+                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
                             // Upload file and remove original
                             session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();                            
                             res += remoteFilePath + "\r\n";
                         }
                     }
                 }
-                res = res.Replace("/atkorablino.ru/docs/", @"<p><img style=""display: block; margin - left: auto; margin - right: auto; "" src="" / ");
-                res = res.Replace(".jpg", @""" width = ""850"" /></ p >");
+                res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
+                res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
 
                 return res;
             }
@@ -415,6 +411,193 @@ namespace ReadWords
                 default:
                     return string.Empty;
             }
+        }
+
+        void Panel1_DragEnter(object sender, DragEventArgs e)
+        {
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
+            {
+                labelDrop.Text = "Отпустите мышь";
+                e.Effect = DragDropEffects.Copy;
+            }                
+        }
+
+        void Panel1_DragDrop(object sender, DragEventArgs e)
+        {
+            labelDrop.Text = "Папка/файлы приняты";
+
+            List<string> paths = new List<string>();
+            foreach (string obj in (string[])e.Data.GetData(DataFormats.FileDrop))
+                if (Directory.Exists(obj))
+                {
+                    // paths.AddRange(Directory.GetFiles(obj, "*.*", SearchOption.TopDirectoryOnly));
+                    textFolderAT.Text = obj;
+                    string[] htmlAT = toAT(obj);
+                    listBox2.Items.Clear();
+                    foreach (string s in htmlAT)
+                        listBox2.Items.Add(s);
+                    //stBox2.Items.Add(obj);
+                }
+                else
+                {
+                    listBox2.Items.Add(obj);
+                    // paths.Add(obj);
+                }
+                    
+        }
+
+        void Panel1_DragLeave(object sender, EventArgs e)
+        {
+            labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            DateTime someDate = new DateTime(1582, 10, 5);
+            textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
+            string[] px = { "700", "850", "960", "1024", "1280" };
+            listWidth.Items.AddRange(px);
+            listWidth.SetSelected(1, true);
+            string[] host = { "atkorablino.ru", "ddt/uoimp", "korablinorono" };
+            listHost.Items.AddRange(host);
+            listHost.SetSelected(0, true);
+
+            FileInfo fileInf = new FileInfo(@"C:\IrfanView\i_view32.exe");
+            if (fileInf.Exists == false)
+            {
+                textBox2.BackColor = Color.DarkRed;
+                textBox2.ForeColor = Color.WhiteSmoke;
+                textBox2.Text = "Не найден файл " + @"C:\IrfanView\i_view32.exe" + "\r\n";
+                textBox2.Text += "Программа не будет корректно работать!!!" + "\r\n";
+            }
+
+        }
+
+        private void Panel1_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
+            {
+                textFolderAT.Text = folderBrowserDialog1.SelectedPath;
+                string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
+                listBox2.Items.Clear();
+                foreach (string s in htmlAT)
+                    listBox2.Items.Add(s);
+            }
+        }
+
+        private void ListHost_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DateTime newsDate = new DateTime(1582, 10, 5);
+
+            switch (listHost.SelectedIndex)
+            {
+                case 0: // atkorablino.ru
+                    textHost.Text = "ftp.atkorablin.nichost.ru";
+                    textUname.Text = "atkorablin_ftp0419";
+                    textPassword.Text = "vBgB0QVuoBvuP";
+                    textPath.Text = "/atkorablino.ru/docs/images/news";
+                    textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textOld.Text = "/atkorablino.ru/docs/";
+                    textNew.Text = "http://atkorablino.ru/";
+                    break;
+                case 1: // ddt/uoimp
+                    textHost.Text = "";
+                    textUname.Text = "";
+                    textPassword.Text = "";
+                    textPath.Text = "";
+                    textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textOld.Text = "";
+                    textNew.Text = "";
+                    break;
+                case 2: // korablinorono
+                    textHost.Text = "ftp.korablino.nichost.ru";
+                    textUname.Text = "korablino_ftpadmin";
+                    textPassword.Text = "h/B5jiCQ";
+                    textPath.Text = "/korablinorono.org.ru/docs/photo/news";
+                    textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textOld.Text = "/korablinorono.org.ru/docs/";
+                    textNew.Text = "http://korablinorono.org.ru/";
+                    break;
+                case -1:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        void Button3_Click_1(object sender, EventArgs e)
+        {
+            // var client = new WordPressClient("http://korablinorono.org.ru/wp-json/");
+            // var client = new WordPressClient("http://demo.wp-api.org/wp-json/");
+
+            // Posts
+            //var posts = await client.Posts.GetAll();
+            // var postbyid = client.Posts.GetByID(113);
+            // textBox2.Text = postbyid.ToString();
+            // FactorialAsync();
+            // CreatePost().Wait();
+            TestMySQL();
+        }
+
+        // test MySQL
+
+        static void TestMySQL()
+        {
+            // строка подключения к базе данных
+            string connectionString = "server=korablino.mysql;user=root;database=people;password=0000;";
+            // объект для установления соединения с БД
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            // открываем соединение
+            connection.Open();
+            // запросы
+            // запрос вставки данных
+            string query = "INSERT INTO men (id, name, age) VALUES (4, 'Kate', 18)";
+            // запрос обновления данных
+            string query2 = "UPDATE men SET age = 22 WHERE id = 4";
+            // запрос удаления данных
+            string query3 = "DELETE FROM men WHERE id = 4";
+            // объект для выполнения SQL-запроса
+            MySqlCommand command = new MySqlCommand(query, connection);
+            // выполняем запрос
+            command.ExecuteNonQuery();
+            // закрываем подключение к БД
+            connection.Close();
+        }
+        // test WordPress
+        private static async Task CreatePost()
+        {
+            try
+            {
+                Console.WriteLine("WordPressClient Старт");
+                WordPressClient client = await GetClient();
+                Console.WriteLine("WordPressClient Финиш");
+                if (await client.IsValidJWToken())
+                {
+                    Console.WriteLine("post Старт токенвалид");
+                    var post = new Post
+                    {
+                        Title = new Title("New post test"),
+                        Content = new Content("Content for new post.")
+                    };
+                    await client.Posts.Create(post);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error:" + e.Message);                
+            }
+        }
+
+        private static async Task<WordPressClient> GetClient()
+        {
+            // JWT authentication
+            var client = new WordPressClient("http://korablinorono.org.ru/wp-json/");
+            client.AuthMethod = AuthMethod.JWT;
+            Console.WriteLine("RequestJWToken Старт");
+            await client.RequestJWToken("zergend", "w9vS10l32M7a");
+            Console.WriteLine("RequestJWToken Финиш");
+
+            return client;
         }
     }     
 }
