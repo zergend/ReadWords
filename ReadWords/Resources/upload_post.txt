@@ -1,0 +1,37 @@
+<?php
+
+require_once( dirname(__FILE__) . '/wp-load.php' );
+require_once( dirname(__FILE__) . '/wp-admin/includes/admin.php' );
+
+$post_data = array(
+    'post_title'    => '###title###',
+    'post_content'  => '###content###',
+    'post_status'   => '###status###', 
+    'post_author'   => 1, 
+    'post_category' => array(1) 
+);
+
+$post_id = wp_insert_post($post_data, true);
+print_r($post_id);
+
+$url = '###url###';
+
+$description = "";
+$file_array = array();
+$tmp = download_url($url);
+
+preg_match('/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $url, $matches );
+$file_array['name'] = basename($matches[0]);
+$file_array['tmp_name'] = $tmp;
+
+$media_id = media_handle_sideload($file_array, $post_id, $description);
+
+if (is_wp_error($media_id)) {
+    @unlink($file_array['tmp_name']);
+    echo $media_id->get_error_messages();
+}
+
+@unlink($file_array['tmp_name'] );
+
+set_post_thumbnail($post_id, $media_id);
+?>

@@ -54,7 +54,7 @@
             this.textFileName = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelDrop = new System.Windows.Forms.Label();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnRU = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.listBox2 = new System.Windows.Forms.ListBox();
             this.textBox2 = new System.Windows.Forms.TextBox();
@@ -159,7 +159,7 @@
             this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.textFileName);
             this.tabPage1.Controls.Add(this.panel1);
-            this.tabPage1.Controls.Add(this.button4);
+            this.tabPage1.Controls.Add(this.btnRU);
             this.tabPage1.Controls.Add(this.pictureBox1);
             this.tabPage1.Controls.Add(this.listBox2);
             this.tabPage1.Controls.Add(this.textBox2);
@@ -309,7 +309,7 @@
             this.panel1.Click += new System.EventHandler(this.Panel1_Click);
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.Panel1_DragDrop);
             this.panel1.DragEnter += new System.Windows.Forms.DragEventHandler(this.Panel1_DragEnter);
-            this.panel1.DragLeave += new System.EventHandler(this.Panel1_DragLeave);
+            this.panel1.DragLeave += new System.EventHandler(this.Panel1_DragLeave);          
             // 
             // labelDrop
             // 
@@ -320,15 +320,15 @@
             this.labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
             this.labelDrop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button4
+            // btnRU
             // 
-            this.button4.Location = new System.Drawing.Point(607, 413);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(103, 23);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Resize+Upload";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.Button4_Click);
+            this.btnRU.Location = new System.Drawing.Point(607, 413);
+            this.btnRU.Name = "btnRU";
+            this.btnRU.Size = new System.Drawing.Size(103, 23);
+            this.btnRU.TabIndex = 6;
+            this.btnRU.Text = "Resize+Upload";
+            this.btnRU.UseVisualStyleBackColor = true;
+            this.btnRU.Click += new System.EventHandler(this.BtnRU_Click);
             // 
             // pictureBox1
             // 
@@ -440,7 +440,7 @@
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.ListBox listBox2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnRU;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelDrop;
         private System.Windows.Forms.Label label2;

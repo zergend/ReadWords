@@ -15,9 +15,6 @@ using YandexDiskNET;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Net;
-using WordPressPCL;
-using WordPressPCL.Models;
-using MySql.Data.MySqlClient;
 
 namespace ReadWords
 {
@@ -223,64 +220,6 @@ namespace ReadWords
             }
         }
 
-        private void Button4_Click(object sender, EventArgs e)
-        {
-            if (listBox2.Items.Count > 0)
-            {
-                string s = string.Empty;
-                string dirName = textFolderAT.Text;
-                string newFolder = textFolderAT.Text;
-                ProcessStartInfo psi = new ProcessStartInfo();
-                //Имя запускаемого приложения
-                psi.FileName = @"C:\IrfanView\i_view32.exe";
-
-                if (Directory.Exists(dirName))
-                {
-                    newFolder = dirName + @"\to_ftp\";
-                }
-                int nFile = 0;
-                string px = listWidth.SelectedItem.ToString();
-                for (int i = 0; i < listBox2.Items.Count; i++)
-                {
-                    s = listBox2.Items[i].ToString();
-                    nFile = i + 1;
-                     
-                    s += @" /resize=(" + px + @", 0) /aspectratio /resample /silent /convert=""" + newFolder + textFileName.Text + nFile.ToString("d3") + @".jpg""";
-                    try
-                    {
-                        //команда, которую надо выполнить
-                        psi.Arguments = s;
-                        Process.Start(psi);
-                        s = newFolder + textFileName.Text + nFile.ToString("d3") + ".jpg";                        
-                    }
-                    catch
-                    {
-                        pictureBox1.Image = pictureBox1.ErrorImage;
-                    }                    
-                }
-
-                string res = string.Empty;
-                res = FTPUploadFile(newFolder, 
-                                    textHost.Text, 
-                                    textUname.Text, 
-                                    textPassword.Text, 
-                                    textPath.Text, 
-                                    textOld.Text,
-                                    textNew.Text,
-                                    px);
-                if (res != string.Empty) {
-                    textBox2.Text = res;
-                    textBox2.SelectAll();
-                    textBox2.Copy();                    
-                    MessageBox.Show("Картинки изменены UND загружены!");
-                }
-                else
-                {
-                    MessageBox.Show("Картинки NOT загружены!");
-                }
-            }
-        }
-
         static string[] toAT(string dirName)
         {
             string[] r = new string[1];
@@ -300,8 +239,15 @@ namespace ReadWords
             else return r;
         }
 
-        // загружаем на FTP
-        private string FTPUploadFile(string newFolder, string hN, string uN, string pW, string rP, string replaceOld, string replaceNew, string pxW)
+        // загружаем изображения на FTP
+        private string FTPUploadFile(string newFolder, 
+                                    string hN, 
+                                    string uN, 
+                                    string pW, 
+                                    string rP, 
+                                    string replaceOld, 
+                                    string replaceNew, 
+                                    string pxW)
         {
             string res = string.Empty;
             try
@@ -425,7 +371,8 @@ namespace ReadWords
         void Panel1_DragDrop(object sender, DragEventArgs e)
         {
             labelDrop.Text = "Папка/файлы приняты";
-
+            DateTime someDate = new DateTime(1582, 10, 5);
+            textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
             List<string> paths = new List<string>();
             foreach (string obj in (string[])e.Data.GetData(DataFormats.FileDrop))
                 if (Directory.Exists(obj))
@@ -452,9 +399,7 @@ namespace ReadWords
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {
-            DateTime someDate = new DateTime(1582, 10, 5);
-            textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
+        {            
             string[] px = { "700", "850", "960", "1024", "1280" };
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
@@ -469,6 +414,7 @@ namespace ReadWords
                 textBox2.ForeColor = Color.WhiteSmoke;
                 textBox2.Text = "Не найден файл " + @"C:\IrfanView\i_view32.exe" + "\r\n";
                 textBox2.Text += "Программа не будет корректно работать!!!" + "\r\n";
+                btnRU.Enabled = false;
             }
 
         }
@@ -477,6 +423,8 @@ namespace ReadWords
         {
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
+                DateTime someDate = new DateTime(1582, 10, 5);
+                textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
                 string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
@@ -527,77 +475,157 @@ namespace ReadWords
 
         void Button3_Click_1(object sender, EventArgs e)
         {
-            // var client = new WordPressClient("http://korablinorono.org.ru/wp-json/");
-            // var client = new WordPressClient("http://demo.wp-api.org/wp-json/");
+            // string php = string.Empty;
 
-            // Posts
-            //var posts = await client.Posts.GetAll();
-            // var postbyid = client.Posts.GetByID(113);
-            // textBox2.Text = postbyid.ToString();
-            // FactorialAsync();
-            // CreatePost().Wait();
-            TestMySQL();
-        }
+            string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
+            php = php.Replace("###title###", "Заголовок записи");
+            php = php.Replace("###content###", "Текст записи");
 
-        // test MySQL
+            textBox2.Text = php;
 
-        static void TestMySQL()
-        {
-            // строка подключения к базе данных
-            string connectionString = "server=korablino.mysql;user=root;database=people;password=0000;";
-            // объект для установления соединения с БД
-            MySqlConnection connection = new MySqlConnection(connectionString);
-            // открываем соединение
-            connection.Open();
-            // запросы
-            // запрос вставки данных
-            string query = "INSERT INTO men (id, name, age) VALUES (4, 'Kate', 18)";
-            // запрос обновления данных
-            string query2 = "UPDATE men SET age = 22 WHERE id = 4";
-            // запрос удаления данных
-            string query3 = "DELETE FROM men WHERE id = 4";
-            // объект для выполнения SQL-запроса
-            MySqlCommand command = new MySqlCommand(query, connection);
-            // выполняем запрос
-            command.ExecuteNonQuery();
-            // закрываем подключение к БД
-            connection.Close();
-        }
-        // test WordPress
-        private static async Task CreatePost()
-        {
+            string writePath = @"D:\dnlds\test.php";
+
             try
             {
-                Console.WriteLine("WordPressClient Старт");
-                WordPressClient client = await GetClient();
-                Console.WriteLine("WordPressClient Финиш");
-                if (await client.IsValidJWToken())
+                using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.UTF8))
                 {
-                    Console.WriteLine("post Старт токенвалид");
-                    var post = new Post
-                    {
-                        Title = new Title("New post test"),
-                        Content = new Content("Content for new post.")
-                    };
-                    await client.Posts.Create(post);
+                    sw.Write(php);
                 }
+            }
+            catch (Exception err)
+            {
+                Console.WriteLine(err.Message);
+            }
+        }
+
+        // PublicPostToWordpress
+        private string PublicPostToWordpress(string newFolder,
+                                    string hN,
+                                    string uN,
+                                    string pW,
+                                    string rP,
+                                    string replaceOld,
+                                    string replaceNew)
+        {
+            string res = string.Empty;
+            try
+            {
+                // Задать параметры сессии
+                SessionOptions sessionOptions = new SessionOptions
+                {
+                    Protocol = Protocol.Ftp,
+                    HostName = hN,
+                    PortNumber = 21,
+                    UserName = uN,
+                    Password = pW,
+                };
+
+                string localPath = newFolder;
+                string remotePath = rP;
+
+                using (Session session = new Session())
+                {
+                    // Connect
+                    session.Open(sessionOptions);
+
+                    // Enumerate files and directories to upload
+                    IEnumerable<FileSystemInfo> fileInfos =
+                        new DirectoryInfo(localPath).EnumerateFileSystemInfos(
+                            "*", SearchOption.AllDirectories);
+
+                    foreach (FileSystemInfo fileInfo in fileInfos)
+                    {
+                        string remoteFilePath =
+                            RemotePath.TranslateLocalPathToRemote(
+                                fileInfo.FullName, localPath, remotePath);
+
+                        if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
+                        {
+                            // Create remote subdirectory, if it does not exist yet
+                            if (!session.FileExists(remoteFilePath))
+                            {
+                                session.CreateDirectory(remoteFilePath);
+                            }
+                        }
+                        else
+                        {
+                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
+                            // Upload file and remove original
+                            session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
+                            res += remoteFilePath + "\r\n";
+                        }
+                    }
+                }
+                //res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
+                //res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
+
+                return res;
             }
             catch (Exception e)
             {
-                MessageBox.Show("Error:" + e.Message);                
+                Console.WriteLine("Error: {0}", e);
+                return string.Empty;
             }
+            // MessageBox.Show("Загрузили");
         }
 
-        private static async Task<WordPressClient> GetClient()
+        private void BtnRU_Click(object sender, EventArgs e)
         {
-            // JWT authentication
-            var client = new WordPressClient("http://korablinorono.org.ru/wp-json/");
-            client.AuthMethod = AuthMethod.JWT;
-            Console.WriteLine("RequestJWToken Старт");
-            await client.RequestJWToken("zergend", "w9vS10l32M7a");
-            Console.WriteLine("RequestJWToken Финиш");
+            if (listBox2.Items.Count > 0)
+            {
+                string s = string.Empty;
+                string dirName = textFolderAT.Text;
+                string newFolder = textFolderAT.Text;
+                ProcessStartInfo psi = new ProcessStartInfo();
+                //Имя запускаемого приложения
+                psi.FileName = @"C:\IrfanView\i_view32.exe";
 
-            return client;
+                if (Directory.Exists(dirName))
+                {
+                    newFolder = dirName + @"\to_ftp\";
+                }
+                int nFile = 0;
+                string px = listWidth.SelectedItem.ToString();
+                for (int i = 0; i < listBox2.Items.Count; i++)
+                {
+                    s = listBox2.Items[i].ToString();
+                    nFile = i + 1;
+
+                    s += @" /resize=(" + px + @", 0) /aspectratio /resample /silent /convert=""" + newFolder + textFileName.Text + nFile.ToString("d3") + @".jpg""";
+                    try
+                    {
+                        //команда, которую надо выполнить
+                        psi.Arguments = s;
+                        Process.Start(psi);
+                        s = newFolder + textFileName.Text + nFile.ToString("d3") + ".jpg";
+                    }
+                    catch
+                    {
+                        pictureBox1.Image = pictureBox1.ErrorImage;
+                    }
+                }
+
+                string res = string.Empty;
+                res = FTPUploadFile(newFolder,
+                                    textHost.Text,
+                                    textUname.Text,
+                                    textPassword.Text,
+                                    textPath.Text,
+                                    textOld.Text,
+                                    textNew.Text,
+                                    px);
+                if (res != string.Empty)
+                {
+                    textBox2.Text = res;
+                    textBox2.SelectAll();
+                    textBox2.Copy();
+                    MessageBox.Show("Картинки изменены UND загружены!");
+                }
+                else
+                {
+                    MessageBox.Show("Картинки NOT загружены!");
+                }
+            }
         }
     }     
 }
