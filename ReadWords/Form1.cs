@@ -9,10 +9,8 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WinSCP;
 
 using YandexDiskNET;
-using System.Text.RegularExpressions;
 using System.Diagnostics;
 using System.Net;
 
@@ -22,7 +20,7 @@ namespace ReadWords
     {
         public Form1()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private async void Button1_Click(object sender, EventArgs e)
@@ -92,6 +90,7 @@ namespace ReadWords
 
         private void Button2_Click(object sender, EventArgs e)
         {
+            WPutilites utils = new WPutilites();
             int countRow = 0;
 
             if (openFile1.ShowDialog() == DialogResult.OK)
@@ -133,7 +132,7 @@ namespace ReadWords
                         }
                         else
                         {
-                            string title = docTitle(textFromWordDocument, countTitle);
+                            string title = utils.docTitle(textFromWordDocument, countTitle);
 
                             switch (countTitle)
                             {
@@ -189,10 +188,11 @@ namespace ReadWords
 
         private void Button3_Click(object sender, EventArgs e)
         {
+            WPutilites utils = new WPutilites();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) 
             {
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
-                string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
+                string[] htmlAT = utils.toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
                     listBox2.Items.Add(s);                   
@@ -211,155 +211,18 @@ namespace ReadWords
                 textBox2.Text += "Создан: {0}" + fileInf.CreationTime + "\r\n";
                 try
                 {
+                    btnPreparePost.Enabled = false; // чтобы не пытаться обработать jpg как word
                     pictureBox1.Image = Image.FromFile(listBox2.SelectedItem.ToString());
                 }
                 catch
-                {                   
+                {
+                    btnPreparePost.Enabled = true;
                     pictureBox1.Image = pictureBox1.ErrorImage;
                 }
             }
-        }
+        }       
 
-        static string[] toAT(string dirName)
-        {
-            string[] r = new string[1];
-            r[0] = "empty";
-            if (Directory.Exists(dirName))
-            {                
-                string[] files = Directory.GetFiles(dirName);
-
-                string[] names = new string[files.Length];
-
-                for (int i = 0; i < files.Length; i++)
-                {
-                    names[i] = files[i];
-                }
-                return names;
-            }
-            else return r;
-        }
-
-        // загружаем изображения на FTP
-        private string FTPUploadFile(string newFolder, 
-                                    string hN, 
-                                    string uN, 
-                                    string pW, 
-                                    string rP, 
-                                    string replaceOld, 
-                                    string replaceNew, 
-                                    string pxW)
-        {
-            string res = string.Empty;
-            try
-            {
-                // Задать параметры сессии
-                SessionOptions sessionOptions = new SessionOptions
-                {
-                    Protocol = Protocol.Ftp,
-                    HostName = hN,
-                    PortNumber = 21,
-                    UserName = uN,
-                    Password = pW,
-                };
-
-                string localPath = newFolder;
-                string remotePath = rP;
-
-                using (Session session = new Session())
-                {
-                    // Connect
-                    session.Open(sessionOptions);
-
-                    // Enumerate files and directories to upload
-                    IEnumerable<FileSystemInfo> fileInfos =
-                        new DirectoryInfo(localPath).EnumerateFileSystemInfos(
-                            "*", SearchOption.AllDirectories);
-
-                    foreach (FileSystemInfo fileInfo in fileInfos)
-                    {
-                        string remoteFilePath =
-                            RemotePath.TranslateLocalPathToRemote(
-                                fileInfo.FullName, localPath, remotePath);
-                       
-                        if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
-                        {
-                            // Create remote subdirectory, if it does not exist yet
-                            if (!session.FileExists(remoteFilePath))
-                            {
-                                session.CreateDirectory(remoteFilePath);
-                            }
-                        }
-                        else
-                        {
-                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
-                            // Upload file and remove original
-                            session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();                            
-                            res += remoteFilePath + "\r\n";
-                        }
-                    }
-                }
-                res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
-                res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
-
-                return res;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: {0}", e);
-                return string.Empty;
-            }            
-            // MessageBox.Show("Загрузили");
-
-        }
-
-        ////////////////////
-        /// functions
-        /// 
-        static string docTitle(string s, int i)
-        {
-            string sT = string.Empty;
-            Regex regex;
-            MatchCollection matches;
-            switch (i)
-            {
-                case 1:
-                    regex = new Regex(@"решен(\w*)|постановл(\w*)|распоряж(\w*)");
-                    matches = regex.Matches(s.ToLower());
-                    if (matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                            sT += " " + match.Value;
-                        sT = sT.Trim();
-                        return sT.ToUpper();
-                    }
-                    else
-                    {
-                        return string.Empty;
-                    }
-                case 2:
-                    regex = new Regex(@"(\d+)\D*(январ[ьея]|феврал[ьея]|март[еа]?|апрел[ьея]|ма[йея]|ию[нл][яье]|август[еа]?|(?:сент|окт|но|дек)[ая]бр[яье])(\D*\d+)\D*(\d+)", RegexOptions.IgnoreCase);
-                    matches = regex.Matches(s);
-                    if (matches.Count > 0)
-                    {
-                        foreach (Match match in matches)
-                        {
-                            GroupCollection groups = match.Groups;
-                            sT += " № " + groups[4].Value.Trim();
-                            sT += " от " + groups[1].Value.Trim();
-                            sT += " " + groups[2].Value.Trim();
-                            sT += " " + groups[3].Value.Trim();
-                        }
-                        sT = sT.ToLower();
-                    }
-                    return sT;
-                case 3:
-                    return " " + s.Trim();
-                default:
-                    return string.Empty;
-            }
-        }
-
-        void Panel1_DragEnter(object sender, DragEventArgs e)
+         void Panel1_DragEnter(object sender, DragEventArgs e)
         {
             if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
@@ -370,6 +233,7 @@ namespace ReadWords
 
         void Panel1_DragDrop(object sender, DragEventArgs e)
         {
+            WPutilites utils = new WPutilites();
             labelDrop.Text = "Папка/файлы приняты";
             DateTime someDate = new DateTime(1582, 10, 5);
             textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
@@ -379,7 +243,7 @@ namespace ReadWords
                 {
                     // paths.AddRange(Directory.GetFiles(obj, "*.*", SearchOption.TopDirectoryOnly));
                     textFolderAT.Text = obj;
-                    string[] htmlAT = toAT(obj);
+                    string[] htmlAT = utils.toAT(obj);
                     listBox2.Items.Clear();
                     foreach (string s in htmlAT)
                         listBox2.Items.Add(s);
@@ -399,7 +263,8 @@ namespace ReadWords
         }
 
         private void Form1_Load(object sender, EventArgs e)
-        {            
+        {
+            btnPreparePost.Enabled = false;
             string[] px = { "700", "850", "960", "1024", "1280" };
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
@@ -421,12 +286,13 @@ namespace ReadWords
 
         private void Panel1_Click(object sender, EventArgs e)
         {
+            WPutilites utils = new WPutilites();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 DateTime someDate = new DateTime(1582, 10, 5);
                 textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
-                string[] htmlAT = toAT(folderBrowserDialog1.SelectedPath);
+                string[] htmlAT = utils.toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
                     listBox2.Items.Add(s);
@@ -445,6 +311,7 @@ namespace ReadWords
                     textPassword.Text = "vBgB0QVuoBvuP";
                     textPath.Text = "/atkorablino.ru/docs/images/news";
                     textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textPathPost.Text = "/atkorablino.ru/docs/";
                     textOld.Text = "/atkorablino.ru/docs/";
                     textNew.Text = "http://atkorablino.ru/";
                     break;
@@ -463,6 +330,7 @@ namespace ReadWords
                     textPassword.Text = "h/B5jiCQ";
                     textPath.Text = "/korablinorono.org.ru/docs/photo/news";
                     textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textPathPost.Text = "/korablinorono.org.ru/docs/";
                     textOld.Text = "/korablinorono.org.ru/docs/";
                     textNew.Text = "http://korablinorono.org.ru/";
                     break;
@@ -471,106 +339,11 @@ namespace ReadWords
                 default:
                     break;
             }
-        }
-
-        void Button3_Click_1(object sender, EventArgs e)
-        {
-            // string php = string.Empty;
-
-            string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
-            php = php.Replace("###title###", "Заголовок записи");
-            php = php.Replace("###content###", "Текст записи");
-
-            textBox2.Text = php;
-
-            string writePath = @"D:\dnlds\test.php";
-
-            try
-            {
-                using (StreamWriter sw = new StreamWriter(writePath, true, System.Text.Encoding.UTF8))
-                {
-                    sw.Write(php);
-                }
-            }
-            catch (Exception err)
-            {
-                Console.WriteLine(err.Message);
-            }
-        }
-
-        // PublicPostToWordpress
-        private string PublicPostToWordpress(string newFolder,
-                                    string hN,
-                                    string uN,
-                                    string pW,
-                                    string rP,
-                                    string replaceOld,
-                                    string replaceNew)
-        {
-            string res = string.Empty;
-            try
-            {
-                // Задать параметры сессии
-                SessionOptions sessionOptions = new SessionOptions
-                {
-                    Protocol = Protocol.Ftp,
-                    HostName = hN,
-                    PortNumber = 21,
-                    UserName = uN,
-                    Password = pW,
-                };
-
-                string localPath = newFolder;
-                string remotePath = rP;
-
-                using (Session session = new Session())
-                {
-                    // Connect
-                    session.Open(sessionOptions);
-
-                    // Enumerate files and directories to upload
-                    IEnumerable<FileSystemInfo> fileInfos =
-                        new DirectoryInfo(localPath).EnumerateFileSystemInfos(
-                            "*", SearchOption.AllDirectories);
-
-                    foreach (FileSystemInfo fileInfo in fileInfos)
-                    {
-                        string remoteFilePath =
-                            RemotePath.TranslateLocalPathToRemote(
-                                fileInfo.FullName, localPath, remotePath);
-
-                        if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
-                        {
-                            // Create remote subdirectory, if it does not exist yet
-                            if (!session.FileExists(remoteFilePath))
-                            {
-                                session.CreateDirectory(remoteFilePath);
-                            }
-                        }
-                        else
-                        {
-                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
-                            // Upload file and remove original
-                            session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
-                            res += remoteFilePath + "\r\n";
-                        }
-                    }
-                }
-                //res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
-                //res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
-
-                return res;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Error: {0}", e);
-                return string.Empty;
-            }
-            // MessageBox.Show("Загрузили");
-        }
+        }    
 
         private void BtnRU_Click(object sender, EventArgs e)
         {
+            WPutilites utils = new WPutilites();
             if (listBox2.Items.Count > 0)
             {
                 string s = string.Empty;
@@ -605,8 +378,9 @@ namespace ReadWords
                     }
                 }
 
-                string res = string.Empty;
-                res = FTPUploadFile(newFolder,
+                string[] res = { "", "" };
+                
+                res = utils.FTPUploadFile(newFolder,
                                     textHost.Text,
                                     textUname.Text,
                                     textPassword.Text,
@@ -614,17 +388,135 @@ namespace ReadWords
                                     textOld.Text,
                                     textNew.Text,
                                     px);
-                if (res != string.Empty)
+                if (res[0] != string.Empty)
                 {
-                    textBox2.Text = res;
-                    textBox2.SelectAll();
-                    textBox2.Copy();
+                    textPost.Text = res[0];
+                    lblPostImg.Text = "!!!"; //res[1];
+                    /* textBox2.SelectAll();
+                    textBox2.Copy(); */
                     MessageBox.Show("Картинки изменены UND загружены!");
                 }
                 else
                 {
                     MessageBox.Show("Картинки NOT загружены!");
                 }
+            }
+        }
+
+        private void BtnPreparePost_Click(object sender, EventArgs e)
+        {
+            WPutilites utils = new WPutilites();
+            //int countRow = 0;
+            string html = string.Empty;
+            FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
+
+            // Open document 
+            string originalfilename = listBox2.SelectedItem.ToString();
+
+            // int countTitle = 1;
+
+            if (fileInf.Exists && new[] { ".docx", ".doc", ".txt", ".rtf" }.Contains(Path.GetExtension(originalfilename).ToLower()))
+            {
+                object File = originalfilename;
+                object nullobject = System.Reflection.Missing.Value;
+                Microsoft.Office.Interop.Word.Application wordobject = new Microsoft.Office.Interop.Word.Application();
+                wordobject.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
+                Microsoft.Office.Interop.Word._Document docs = wordobject.Documents.Open(ref File, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject);
+
+
+                Microsoft.Office.Interop.Word.Range wordContentRange = docs.Content;
+
+                string textFromWordDocument = string.Empty;
+                string strDocTitle = string.Empty;
+                int title = 1;
+
+                for (int i = 1; i <= wordContentRange.Paragraphs.Count; i++)
+                {
+                    // !!! концом абзаца могут притворяться разрывы строк или куча пробелов ???
+                    textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
+                    textFromWordDocument = textFromWordDocument.Replace(Environment.NewLine, " ");
+                    // textFromWordDocument = textFromWordDocument.Replace("\r", "\r\n"); 
+                    if (textFromWordDocument.Trim() == string.Empty)
+                    {
+                        // textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
+                    }
+                    else
+                    {
+                        if ( title == 1 )
+                        {
+                            textTitle.Text = textFromWordDocument.Trim();
+                            title = 2;
+                        }
+                        else
+                            html += "<p>" + textFromWordDocument.Trim() + "</p>" + "\r\n";     
+                    }
+
+                }
+
+                
+                textPost.Text = html + "\r\n" + textPost.Text;                
+
+                docs.Close(ref nullobject, ref nullobject, ref nullobject);
+                wordobject.Quit(ref nullobject, ref nullobject, ref nullobject);
+
+                MessageBox.Show("html prepare!");
+            }
+        }
+
+        private void BtnPost_Click(object sender, EventArgs e)
+        {
+            string dirName = textFolderAT.Text;
+            string subDir = @"uppost";
+            DirectoryInfo dirInfo = new DirectoryInfo(dirName);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+            dirInfo.CreateSubdirectory(subDir);
+
+            WPutilites utils = new WPutilites();
+            string writeFile = "";
+            //string s = "";
+
+            string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
+            php = php.Replace("###title###", textTitle.Text);
+            php = php.Replace("###content###", textPost.Text);
+            php = php.Replace("###status###", "draft");
+            php = php.Replace("array(1)", "array(22)");
+            php = php.Replace("###url###", lblPostImg.Text);
+
+
+            if (Directory.Exists(dirName + @"\uppost\"))
+            {
+                writeFile = dirName + @"\uppost\post_me.php";
+                
+                using (StreamWriter sw = new StreamWriter(writeFile, true, System.Text.Encoding.Default))
+                {
+                    sw.Write(php);
+                }
+            }                                
+
+           string res = string.Empty;
+
+           /* res = utils.FTPUploadFile(newFolder,
+                                textHost.Text,
+                                textUname.Text,
+                                textPassword.Text,
+                                textPath.Text,
+                                textOld.Text,
+                                textNew.Text,
+                                px); */
+
+            if (res == string.Empty) 
+            {
+                // textPost.Text = res;
+
+                webPost.Navigate("http://korablinorono.org.ru");
+                MessageBox.Show("Пост опубликован!");
+            }
+            else
+            {
+                MessageBox.Show("Пост NOT опубликован!");
             }
         }
     }     
