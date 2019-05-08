@@ -391,7 +391,7 @@ namespace ReadWords
                 if (res[0] != string.Empty)
                 {
                     textPost.Text = res[0];
-                    lblPostImg.Text = "!!!"; //res[1];
+                    lblPostImg.Text = res[1];
                     /* textBox2.SelectAll();
                     textBox2.Copy(); */
                     MessageBox.Show("Картинки изменены UND загружены!");
@@ -483,13 +483,17 @@ namespace ReadWords
             php = php.Replace("###content###", textPost.Text);
             php = php.Replace("###status###", "draft");
             php = php.Replace("array(1)", "array(22)");
-            php = php.Replace("###url###", lblPostImg.Text);
+            php = php.Replace("###url###", lblPostImg.Text); // изображение записи
 
 
             if (Directory.Exists(dirName + @"\uppost\"))
             {
                 writeFile = dirName + @"\uppost\post_me.php";
-                
+
+                FileInfo fileInf = new FileInfo(writeFile);
+                if (fileInf.Exists)
+                    fileInf.Delete();
+
                 using (StreamWriter sw = new StreamWriter(writeFile, true, System.Text.Encoding.Default))
                 {
                     sw.Write(php);

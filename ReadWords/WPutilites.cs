@@ -69,6 +69,9 @@ namespace ReadWords
                             // Upload file and remove original
                             session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
                             res += remoteFilePath + "\r\n";
+                            if (i == 0)
+                                r[1] = remoteFilePath;
+                            i = 999;
                         }
                     }
                 }
@@ -77,10 +80,7 @@ namespace ReadWords
                 {
                     res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
                     res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
-                    r[0] = res;
-                    if (i == 0)
-                        r[1] = res;
-                    i = 999;
+                    r[0] = res;                    
                 }
                 else
                 {
