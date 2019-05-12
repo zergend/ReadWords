@@ -37,6 +37,12 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lblPostImg = new System.Windows.Forms.Label();
+            this.btnPost = new System.Windows.Forms.Button();
+            this.webPost = new System.Windows.Forms.WebBrowser();
+            this.textPost = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.textTitle = new System.Windows.Forms.TextBox();
             this.btnPreparePost = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.textPathPost = new System.Windows.Forms.TextBox();
@@ -65,12 +71,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.textTitle = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.textPost = new System.Windows.Forms.TextBox();
-            this.webPost = new System.Windows.Forms.WebBrowser();
-            this.btnPost = new System.Windows.Forms.Button();
-            this.lblPostImg = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -188,6 +188,57 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lblPostImg
+            // 
+            this.lblPostImg.AutoSize = true;
+            this.lblPostImg.Location = new System.Drawing.Point(6, 447);
+            this.lblPostImg.Name = "lblPostImg";
+            this.lblPostImg.Size = new System.Drawing.Size(58, 13);
+            this.lblPostImg.TabIndex = 31;
+            this.lblPostImg.Text = "post image";
+            // 
+            // btnPost
+            // 
+            this.btnPost.Location = new System.Drawing.Point(1072, 447);
+            this.btnPost.Name = "btnPost";
+            this.btnPost.Size = new System.Drawing.Size(91, 23);
+            this.btnPost.TabIndex = 30;
+            this.btnPost.Text = "post";
+            this.btnPost.UseVisualStyleBackColor = true;
+            this.btnPost.Click += new System.EventHandler(this.BtnPost_Click);
+            // 
+            // webPost
+            // 
+            this.webPost.Location = new System.Drawing.Point(724, 265);
+            this.webPost.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webPost.Name = "webPost";
+            this.webPost.Size = new System.Drawing.Size(439, 167);
+            this.webPost.TabIndex = 29;
+            // 
+            // textPost
+            // 
+            this.textPost.Location = new System.Drawing.Point(724, 36);
+            this.textPost.Multiline = true;
+            this.textPost.Name = "textPost";
+            this.textPost.Size = new System.Drawing.Size(439, 210);
+            this.textPost.TabIndex = 28;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(716, 6);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(30, 13);
+            this.label8.TabIndex = 27;
+            this.label8.Text = "Title:";
+            // 
+            // textTitle
+            // 
+            this.textTitle.Location = new System.Drawing.Point(746, 6);
+            this.textTitle.Name = "textTitle";
+            this.textTitle.Size = new System.Drawing.Size(418, 20);
+            this.textTitle.TabIndex = 26;
             // 
             // btnPreparePost
             // 
@@ -416,7 +467,7 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(939, 476);
+            this.tabPage2.Size = new System.Drawing.Size(1170, 476);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Обработка Word";
             this.tabPage2.UseVisualStyleBackColor = true;
@@ -426,61 +477,10 @@
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(939, 476);
+            this.tabPage3.Size = new System.Drawing.Size(1170, 476);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // textTitle
-            // 
-            this.textTitle.Location = new System.Drawing.Point(746, 6);
-            this.textTitle.Name = "textTitle";
-            this.textTitle.Size = new System.Drawing.Size(418, 20);
-            this.textTitle.TabIndex = 26;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(716, 6);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 13);
-            this.label8.TabIndex = 27;
-            this.label8.Text = "Title:";
-            // 
-            // textPost
-            // 
-            this.textPost.Location = new System.Drawing.Point(724, 36);
-            this.textPost.Multiline = true;
-            this.textPost.Name = "textPost";
-            this.textPost.Size = new System.Drawing.Size(439, 210);
-            this.textPost.TabIndex = 28;
-            // 
-            // webPost
-            // 
-            this.webPost.Location = new System.Drawing.Point(724, 265);
-            this.webPost.MinimumSize = new System.Drawing.Size(20, 20);
-            this.webPost.Name = "webPost";
-            this.webPost.Size = new System.Drawing.Size(439, 167);
-            this.webPost.TabIndex = 29;
-            // 
-            // btnPost
-            // 
-            this.btnPost.Location = new System.Drawing.Point(1072, 447);
-            this.btnPost.Name = "btnPost";
-            this.btnPost.Size = new System.Drawing.Size(91, 23);
-            this.btnPost.TabIndex = 30;
-            this.btnPost.Text = "post";
-            this.btnPost.UseVisualStyleBackColor = true;
-            this.btnPost.Click += new System.EventHandler(this.BtnPost_Click);
-            // 
-            // lblPostImg
-            // 
-            this.lblPostImg.AutoSize = true;
-            this.lblPostImg.Location = new System.Drawing.Point(6, 447);
-            this.lblPostImg.Name = "lblPostImg";
-            this.lblPostImg.Size = new System.Drawing.Size(58, 13);
-            this.lblPostImg.TabIndex = 31;
-            this.lblPostImg.Text = "post image";
             // 
             // Form1
             // 
