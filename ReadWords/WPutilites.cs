@@ -70,7 +70,7 @@ namespace ReadWords
                             session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
                             res += remoteFilePath + "\r\n";
                             if (i == 0)
-                                r[1] = remoteFilePath;
+                                r[1] = remoteFilePath.Replace(replaceOld, replaceNew);
                             i = 999;
                         }
                     }
@@ -100,12 +100,12 @@ namespace ReadWords
         }
 
         // PublicPostToWordpress
-        public string PublicPostToWordpress(string newFolder,
+        public string UploadRemovePHP( string UploadOrRemove,
+                                    string localFile,
                                     string hN,
                                     string uN,
                                     string pW,
-                                    string rP,
-                                    string replaceNew)
+                                    string remotePath)
         {
             string res = string.Empty;
             try
@@ -120,44 +120,70 @@ namespace ReadWords
                     Password = pW,
                 };
 
-                string localPath = newFolder;
-                string remotePath = rP;
+                // string localPath = newFolder;
+                // string remotePath = rP;
 
                 using (Session session = new Session())
                 {
                     // Connect
                     session.Open(sessionOptions);
 
-                    // Enumerate files and directories to upload
-                    IEnumerable<FileSystemInfo> fileInfos =
-                        new DirectoryInfo(localPath).EnumerateFileSystemInfos(
-                            "*", SearchOption.AllDirectories);
-
-                    foreach (FileSystemInfo fileInfo in fileInfos)
+                    UploadOrRemove = UploadOrRemove.ToLower();
+                    switch (UploadOrRemove)
                     {
-                        string remoteFilePath =
-                            RemotePath.TranslateLocalPathToRemote(
-                                fileInfo.FullName, localPath, remotePath);
+                        case "upload":
+                            // Upload files
+                            TransferOptions transferOptions = new TransferOptions();
+                            transferOptions.TransferMode = TransferMode.Binary;
 
-                        if (fileInfo.Attributes.HasFlag(FileAttributes.Directory))
-                        {
-                            // Create remote subdirectory, if it does not exist yet
-                            if (!session.FileExists(remoteFilePath))
+                            TransferOperationResult transferResult;
+                            transferResult =
+                                session.PutFiles(localFile, remotePath, false, transferOptions);
+
+                            /* RemovalOperationResult removeResult;
+                            removeResult = session.RemoveFiles("/home/user/"); 
+                            */
+
+                            // Throw on any error
+                            transferResult.Check();
+
+                            // Print results
+                            foreach (TransferEventArgs transfer in transferResult.Transfers)
                             {
-                                session.CreateDirectory(remoteFilePath);
+                                Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
+                                res = transfer.FileName;
                             }
-                        }
-                        else
-                        {
-                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
-                            // Upload file and remove original
-                            session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
-                            res += remoteFilePath + "\r\n";
-                        }
-                    }
+                            break;
+                        case "remove":
+                            // Remove files
+                            /* 
+                            TransferOptions transferOptions = new TransferOptions();
+                            transferOptions.TransferMode = TransferMode.Binary;
+
+                            TransferOperationResult transferResult;
+                            transferResult =
+                                session.PutFiles(localPath + "post_me.php", remotePath, false, transferOptions);
+                            */
+
+                            RemovalOperationResult removeResult;
+                            removeResult = session.RemoveFiles("/home/user/");
+
+
+                            // Throw on any error
+                            removeResult.Check();
+
+                            // Print results
+                            foreach (TransferEventArgs transfer in removeResult.Removals)
+                            {
+                                Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
+                                res = transfer.FileName;
+                            }
+                            break;
+                        default:
+                            res = string.Empty;
+                            break;
+                    }                    
                 }
-                //res = res.Replace(replaceOld, @"<p><img style=""display: block; margin-left: auto; margin-right: auto; "" src=""" + replaceNew);
-                //res = res.Replace(".jpg", @".jpg"" width = """ + pxW + @"""/></p>");
 
                 return res;
             }

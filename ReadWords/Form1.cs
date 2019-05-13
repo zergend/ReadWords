@@ -237,7 +237,7 @@ namespace ReadWords
             labelDrop.Text = "Папка/файлы приняты";
             DateTime someDate = new DateTime(1582, 10, 5);
             textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
-            List<string> paths = new List<string>();
+            // List<string> paths = new List<string>();
             foreach (string obj in (string[])e.Data.GetData(DataFormats.FileDrop))
                 if (Directory.Exists(obj))
                 {
@@ -254,7 +254,18 @@ namespace ReadWords
                     listBox2.Items.Add(obj);
                     // paths.Add(obj);
                 }
-                    
+            try
+            {
+                listBox2.SetSelected(0, true);
+                FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
+                if (fileInf.Exists)
+                    textFolderAT.Text = fileInf.DirectoryName;
+            }
+            catch
+            {
+                MessageBox.Show("Файлы отсутствуют!");
+            }
+            
         }
 
         void Panel1_DragLeave(object sender, EventArgs e)
@@ -302,6 +313,7 @@ namespace ReadWords
         private void ListHost_SelectedIndexChanged(object sender, EventArgs e)
         {
             DateTime newsDate = new DateTime(1582, 10, 5);
+            checkCat.Items.Clear(); // и заполняем новыми значениями            
 
             switch (listHost.SelectedIndex)
             {
@@ -333,6 +345,12 @@ namespace ReadWords
                     textPathPost.Text = "/korablinorono.org.ru/docs/";
                     textOld.Text = "/korablinorono.org.ru/docs/";
                     textNew.Text = "http://korablinorono.org.ru/";
+                    // категории
+                    checkCat.Items.Add("Анонсы, объявления;22");
+                    checkCat.Items.Add("Конкурсы для обучающихся;46");
+                    checkCat.Items.Add("Конкурсы для педагогов;47");
+                    checkCat.SetItemChecked(0, true);
+
                     break;
                 case -1:
                     break;
@@ -391,10 +409,12 @@ namespace ReadWords
                 if (res[0] != string.Empty)
                 {
                     textPost.Text = res[0];
-                    lblPostImg.Text = res[1];
+                    // lblPostImg.Text = res[1];
+                    txtPostImage.Text = res[1];
                     /* textBox2.SelectAll();
                     textBox2.Copy(); */
-                    MessageBox.Show("Картинки изменены UND загружены!");
+                    // MessageBox.Show("Картинки изменены UND загружены!");
+                    btnPreparePost.Enabled = true;
                 }
                 else
                 {
@@ -448,7 +468,7 @@ namespace ReadWords
                             title = 2;
                         }
                         else
-                            html += "<p>" + textFromWordDocument.Trim() + "</p>" + "\r\n";     
+                            html += "<p>" + textFromWordDocument.Trim() + "</p>\r\n";     
                     }
 
                 }
@@ -459,7 +479,8 @@ namespace ReadWords
                 docs.Close(ref nullobject, ref nullobject, ref nullobject);
                 wordobject.Quit(ref nullobject, ref nullobject, ref nullobject);
 
-                MessageBox.Show("html prepare!");
+                // MessageBox.Show("html prepare!");
+                btnPost.Enabled = true;
             }
         }
 
@@ -478,12 +499,24 @@ namespace ReadWords
             string writeFile = "";
             //string s = "";
 
+            // выбранные категории
+            string[] cats;
+            string catToPHP = string.Empty;
+
+            foreach (object item in checkCat.CheckedItems)
+            {
+                cats = item.ToString().Split(';');
+                catToPHP += cats[1] + ",";
+            }
+            catToPHP = "array(" + catToPHP.Trim(',') + ")"; // конец выбранных категорий
+            
+
             string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
             php = php.Replace("###title###", textTitle.Text);
             php = php.Replace("###content###", textPost.Text);
             php = php.Replace("###status###", "draft");
-            php = php.Replace("array(1)", "array(22)");
-            php = php.Replace("###url###", lblPostImg.Text); // изображение записи
+            php = php.Replace("###category###", catToPHP);
+            php = php.Replace("###url###", txtPostImage.Text); // изображение записи
 
 
             if (Directory.Exists(dirName + @"\uppost\"))
@@ -502,25 +535,36 @@ namespace ReadWords
 
            string res = string.Empty;
 
-           /* res = utils.FTPUploadFile(newFolder,
-                                textHost.Text,
-                                textUname.Text,
-                                textPassword.Text,
-                                textPath.Text,
-                                textOld.Text,
-                                textNew.Text,
-                                px); */
-
-            if (res == string.Empty) 
+            res = utils.UploadRemovePHP("upload",
+                                    writeFile,
+                                    textHost.Text,
+                                    textUname.Text,
+                                    textPassword.Text,
+                                    textPath.Text);
+            if (res != string.Empty) 
             {
-                // textPost.Text = res;
+                textPost.Text = res;
 
-                webPost.Navigate("http://korablinorono.org.ru");
-                MessageBox.Show("Пост опубликован!");
+                webPost.Navigate("http://korablinorono.org.ru/post_me.php");
+                MessageBox.Show("Черновик Поста подготовлен!");
             }
             else
             {
                 MessageBox.Show("Пост NOT опубликован!");
+            }
+        }
+
+        private void BtnTitleToPost_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (textTitle.SelectedText.Trim() != string.Empty)
+                    textPost.Text = "<p>" + textTitle.SelectedText.Trim() + "</p>\r\n" +  textPost.Text;
+                textTitle.Text = textTitle.Text.Remove(textTitle.SelectedText.Count());
+            }
+            catch
+            {
+                MessageBox.Show("Возможно, не выделен текст в заголовке!");
             }
         }
     }     

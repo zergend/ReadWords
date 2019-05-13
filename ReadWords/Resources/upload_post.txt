@@ -8,7 +8,7 @@ $post_data = array(
     'post_content'  => '###content###',
     'post_status'   => '###status###', 
     'post_author'   => 1, 
-    'post_category' => array(1) 
+    'post_category' => ###category### 
 );
 
 $post_id = wp_insert_post($post_data, true);

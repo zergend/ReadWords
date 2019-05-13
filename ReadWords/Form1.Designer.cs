@@ -37,6 +37,9 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label9 = new System.Windows.Forms.Label();
+            this.checkCat = new System.Windows.Forms.CheckedListBox();
+            this.btnTitleToPost = new System.Windows.Forms.Button();
             this.lblPostImg = new System.Windows.Forms.Label();
             this.btnPost = new System.Windows.Forms.Button();
             this.webPost = new System.Windows.Forms.WebBrowser();
@@ -71,6 +74,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.txtPostImage = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -151,7 +155,10 @@
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.lblPostImg);
+            this.tabPage1.Controls.Add(this.txtPostImage);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.checkCat);
+            this.tabPage1.Controls.Add(this.btnTitleToPost);
             this.tabPage1.Controls.Add(this.btnPost);
             this.tabPage1.Controls.Add(this.webPost);
             this.tabPage1.Controls.Add(this.textPost);
@@ -189,10 +196,38 @@
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(272, 144);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(52, 13);
+            this.label9.TabIndex = 34;
+            this.label9.Text = "Рубрики:";
+            // 
+            // checkCat
+            // 
+            this.checkCat.CheckOnClick = true;
+            this.checkCat.FormattingEnabled = true;
+            this.checkCat.Location = new System.Drawing.Point(269, 160);
+            this.checkCat.Name = "checkCat";
+            this.checkCat.Size = new System.Drawing.Size(223, 169);
+            this.checkCat.TabIndex = 33;
+            // 
+            // btnTitleToPost
+            // 
+            this.btnTitleToPost.Location = new System.Drawing.Point(719, 23);
+            this.btnTitleToPost.Name = "btnTitleToPost";
+            this.btnTitleToPost.Size = new System.Drawing.Size(27, 23);
+            this.btnTitleToPost.TabIndex = 32;
+            this.btnTitleToPost.Text = "V";
+            this.btnTitleToPost.UseVisualStyleBackColor = true;
+            this.btnTitleToPost.Click += new System.EventHandler(this.BtnTitleToPost_Click);
+            // 
             // lblPostImg
             // 
             this.lblPostImg.AutoSize = true;
-            this.lblPostImg.Location = new System.Drawing.Point(6, 447);
+            this.lblPostImg.Location = new System.Drawing.Point(201, 520);
             this.lblPostImg.Name = "lblPostImg";
             this.lblPostImg.Size = new System.Drawing.Size(58, 13);
             this.lblPostImg.TabIndex = 31;
@@ -200,28 +235,30 @@
             // 
             // btnPost
             // 
+            this.btnPost.Enabled = false;
             this.btnPost.Location = new System.Drawing.Point(1072, 447);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(91, 23);
             this.btnPost.TabIndex = 30;
-            this.btnPost.Text = "post";
+            this.btnPost.Text = "(3) post";
             this.btnPost.UseVisualStyleBackColor = true;
             this.btnPost.Click += new System.EventHandler(this.BtnPost_Click);
             // 
             // webPost
             // 
-            this.webPost.Location = new System.Drawing.Point(724, 265);
+            this.webPost.Location = new System.Drawing.Point(724, 313);
             this.webPost.MinimumSize = new System.Drawing.Size(20, 20);
             this.webPost.Name = "webPost";
-            this.webPost.Size = new System.Drawing.Size(439, 167);
+            this.webPost.Size = new System.Drawing.Size(439, 100);
             this.webPost.TabIndex = 29;
             // 
             // textPost
             // 
-            this.textPost.Location = new System.Drawing.Point(724, 36);
+            this.textPost.Location = new System.Drawing.Point(719, 52);
             this.textPost.Multiline = true;
             this.textPost.Name = "textPost";
-            this.textPost.Size = new System.Drawing.Size(439, 210);
+            this.textPost.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textPost.Size = new System.Drawing.Size(444, 255);
             this.textPost.TabIndex = 28;
             // 
             // label8
@@ -236,17 +273,19 @@
             // textTitle
             // 
             this.textTitle.Location = new System.Drawing.Point(746, 6);
+            this.textTitle.Multiline = true;
             this.textTitle.Name = "textTitle";
-            this.textTitle.Size = new System.Drawing.Size(418, 20);
+            this.textTitle.Size = new System.Drawing.Size(418, 40);
             this.textTitle.TabIndex = 26;
             // 
             // btnPreparePost
             // 
+            this.btnPreparePost.Enabled = false;
             this.btnPreparePost.Location = new System.Drawing.Point(606, 447);
             this.btnPreparePost.Name = "btnPreparePost";
             this.btnPreparePost.Size = new System.Drawing.Size(103, 23);
             this.btnPreparePost.TabIndex = 12;
-            this.btnPreparePost.Text = "prepare Post";
+            this.btnPreparePost.Text = "(2) prepare Post";
             this.btnPreparePost.UseVisualStyleBackColor = true;
             this.btnPreparePost.Click += new System.EventHandler(this.BtnPreparePost_Click);
             // 
@@ -420,16 +459,16 @@
             this.btnRU.Name = "btnRU";
             this.btnRU.Size = new System.Drawing.Size(103, 23);
             this.btnRU.TabIndex = 6;
-            this.btnRU.Text = "Resize+Upload";
+            this.btnRU.Text = "(1) Resize+Upload";
             this.btnRU.UseVisualStyleBackColor = true;
             this.btnRU.Click += new System.EventHandler(this.BtnRU_Click);
             // 
             // pictureBox1
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.DimGray;
-            this.pictureBox1.Location = new System.Drawing.Point(268, 230);
+            this.pictureBox1.Location = new System.Drawing.Point(6, 367);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(226, 103);
+            this.pictureBox1.Size = new System.Drawing.Size(163, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -439,16 +478,16 @@
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(6, 160);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(257, 277);
+            this.listBox2.Size = new System.Drawing.Size(257, 134);
             this.listBox2.TabIndex = 4;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.ListBox2_SelectedIndexChanged);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(268, 134);
+            this.textBox2.Location = new System.Drawing.Point(6, 297);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(226, 90);
+            this.textBox2.Size = new System.Drawing.Size(256, 64);
             this.textBox2.TabIndex = 3;
             // 
             // textFolderAT
@@ -482,6 +521,14 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // txtPostImage
+            // 
+            this.txtPostImage.Location = new System.Drawing.Point(719, 436);
+            this.txtPostImage.Multiline = true;
+            this.txtPostImage.Name = "txtPostImage";
+            this.txtPostImage.Size = new System.Drawing.Size(347, 33);
+            this.txtPostImage.TabIndex = 35;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -490,6 +537,7 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.Button1);
+            this.Controls.Add(this.lblPostImg);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
@@ -502,6 +550,7 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -548,8 +597,12 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textTitle;
         private System.Windows.Forms.Button btnPost;
-        private System.Windows.Forms.WebBrowser webPost;
         private System.Windows.Forms.Label lblPostImg;
+        private System.Windows.Forms.Button btnTitleToPost;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.CheckedListBox checkCat;
+        private System.Windows.Forms.WebBrowser webPost;
+        private System.Windows.Forms.TextBox txtPostImage;
     }
 }
 
