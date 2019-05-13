@@ -409,10 +409,7 @@ namespace ReadWords
                 if (res[0] != string.Empty)
                 {
                     textPost.Text = res[0];
-                    // lblPostImg.Text = res[1];
                     txtPostImage.Text = res[1];
-                    /* textBox2.SelectAll();
-                    textBox2.Copy(); */
                     // MessageBox.Show("Картинки изменены UND загружены!");
                     btnPreparePost.Enabled = true;
                 }
@@ -433,8 +430,6 @@ namespace ReadWords
             // Open document 
             string originalfilename = listBox2.SelectedItem.ToString();
 
-            // int countTitle = 1;
-
             if (fileInf.Exists && new[] { ".docx", ".doc", ".txt", ".rtf" }.Contains(Path.GetExtension(originalfilename).ToLower()))
             {
                 object File = originalfilename;
@@ -442,7 +437,6 @@ namespace ReadWords
                 Microsoft.Office.Interop.Word.Application wordobject = new Microsoft.Office.Interop.Word.Application();
                 wordobject.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
                 Microsoft.Office.Interop.Word._Document docs = wordobject.Documents.Open(ref File, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject, ref nullobject);
-
 
                 Microsoft.Office.Interop.Word.Range wordContentRange = docs.Content;
 
@@ -455,7 +449,6 @@ namespace ReadWords
                     // !!! концом абзаца могут притворяться разрывы строк или куча пробелов ???
                     textFromWordDocument = wordContentRange.Paragraphs[i].Range.Text;
                     textFromWordDocument = textFromWordDocument.Replace(Environment.NewLine, " ");
-                    // textFromWordDocument = textFromWordDocument.Replace("\r", "\r\n"); 
                     if (textFromWordDocument.Trim() == string.Empty)
                     {
                         // textBox.Text += i.ToString() + ": !___ПУСТОЙ ПАРАГРАФ___!" + "\r\n";
@@ -465,14 +458,13 @@ namespace ReadWords
                         if ( title == 1 )
                         {
                             textTitle.Text = textFromWordDocument.Trim();
+
                             title = 2;
                         }
                         else
                             html += "<p>" + textFromWordDocument.Trim() + "</p>\r\n";     
                     }
-
                 }
-
                 
                 textPost.Text = html + "\r\n" + textPost.Text;                
 
@@ -497,7 +489,6 @@ namespace ReadWords
 
             WPutilites utils = new WPutilites();
             string writeFile = "";
-            //string s = "";
 
             // выбранные категории
             string[] cats;
@@ -508,8 +499,7 @@ namespace ReadWords
                 cats = item.ToString().Split(';');
                 catToPHP += cats[1] + ",";
             }
-            catToPHP = "array(" + catToPHP.Trim(',') + ")"; // конец выбранных категорий
-            
+            catToPHP = "array(" + catToPHP.Trim(',') + ")"; // конец выбранных категорий            
 
             string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
             php = php.Replace("###title###", textTitle.Text);
@@ -527,7 +517,7 @@ namespace ReadWords
                 if (fileInf.Exists)
                     fileInf.Delete();
 
-                using (StreamWriter sw = new StreamWriter(writeFile, true, System.Text.Encoding.Default))
+                using (StreamWriter sw = new StreamWriter(writeFile, true, System.Text.Encoding.UTF8))
                 {
                     sw.Write(php);
                 }
@@ -535,17 +525,17 @@ namespace ReadWords
 
            string res = string.Empty;
 
-            res = utils.UploadRemovePHP("upload",
-                                    writeFile,
-                                    textHost.Text,
-                                    textUname.Text,
-                                    textPassword.Text,
-                                    textPath.Text);
+            res = utils.UploadPHP(writeFile,
+                                  textHost.Text,
+                                  textUname.Text,
+                                  textPassword.Text,
+                                  textPathPost.Text);
             if (res != string.Empty) 
             {
-                textPost.Text = res;
+                //textPost.Text = res;
 
                 webPost.Navigate("http://korablinorono.org.ru/post_me.php");
+
                 MessageBox.Show("Черновик Поста подготовлен!");
             }
             else

@@ -100,12 +100,11 @@ namespace ReadWords
         }
 
         // PublicPostToWordpress
-        public string UploadRemovePHP( string UploadOrRemove,
-                                    string localFile,
-                                    string hN,
-                                    string uN,
-                                    string pW,
-                                    string remotePath)
+        public string UploadPHP(string localFile,
+                                string hN,
+                                string uN,
+                                string pW,
+                                string remotePath)
         {
             string res = string.Empty;
             try
@@ -128,61 +127,23 @@ namespace ReadWords
                     // Connect
                     session.Open(sessionOptions);
 
-                    UploadOrRemove = UploadOrRemove.ToLower();
-                    switch (UploadOrRemove)
+                    // Upload files
+                    TransferOptions transferOptions = new TransferOptions();
+                    transferOptions.TransferMode = TransferMode.Binary;
+
+                    TransferOperationResult transferResult;
+                    transferResult =
+                        session.PutFiles(localFile, remotePath, false, transferOptions);
+
+                    // Throw on any error
+                    transferResult.Check();
+
+                    // Print results
+                    foreach (TransferEventArgs transfer in transferResult.Transfers)
                     {
-                        case "upload":
-                            // Upload files
-                            TransferOptions transferOptions = new TransferOptions();
-                            transferOptions.TransferMode = TransferMode.Binary;
-
-                            TransferOperationResult transferResult;
-                            transferResult =
-                                session.PutFiles(localFile, remotePath, false, transferOptions);
-
-                            /* RemovalOperationResult removeResult;
-                            removeResult = session.RemoveFiles("/home/user/"); 
-                            */
-
-                            // Throw on any error
-                            transferResult.Check();
-
-                            // Print results
-                            foreach (TransferEventArgs transfer in transferResult.Transfers)
-                            {
-                                Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
-                                res = transfer.FileName;
-                            }
-                            break;
-                        case "remove":
-                            // Remove files
-                            /* 
-                            TransferOptions transferOptions = new TransferOptions();
-                            transferOptions.TransferMode = TransferMode.Binary;
-
-                            TransferOperationResult transferResult;
-                            transferResult =
-                                session.PutFiles(localPath + "post_me.php", remotePath, false, transferOptions);
-                            */
-
-                            RemovalOperationResult removeResult;
-                            removeResult = session.RemoveFiles("/home/user/");
-
-
-                            // Throw on any error
-                            removeResult.Check();
-
-                            // Print results
-                            foreach (TransferEventArgs transfer in removeResult.Removals)
-                            {
-                                Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
-                                res = transfer.FileName;
-                            }
-                            break;
-                        default:
-                            res = string.Empty;
-                            break;
-                    }                    
+                        Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
+                        res = transfer.FileName;
+                    }                                      
                 }
 
                 return res;

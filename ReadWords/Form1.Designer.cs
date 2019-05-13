@@ -37,10 +37,10 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.txtPostImage = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.checkCat = new System.Windows.Forms.CheckedListBox();
             this.btnTitleToPost = new System.Windows.Forms.Button();
-            this.lblPostImg = new System.Windows.Forms.Label();
             this.btnPost = new System.Windows.Forms.Button();
             this.webPost = new System.Windows.Forms.WebBrowser();
             this.textPost = new System.Windows.Forms.TextBox();
@@ -74,7 +74,6 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.txtPostImage = new System.Windows.Forms.TextBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -196,6 +195,14 @@
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // txtPostImage
+            // 
+            this.txtPostImage.Location = new System.Drawing.Point(719, 436);
+            this.txtPostImage.Multiline = true;
+            this.txtPostImage.Name = "txtPostImage";
+            this.txtPostImage.Size = new System.Drawing.Size(347, 33);
+            this.txtPostImage.TabIndex = 35;
+            // 
             // label9
             // 
             this.label9.AutoSize = true;
@@ -223,15 +230,6 @@
             this.btnTitleToPost.Text = "V";
             this.btnTitleToPost.UseVisualStyleBackColor = true;
             this.btnTitleToPost.Click += new System.EventHandler(this.BtnTitleToPost_Click);
-            // 
-            // lblPostImg
-            // 
-            this.lblPostImg.AutoSize = true;
-            this.lblPostImg.Location = new System.Drawing.Point(201, 520);
-            this.lblPostImg.Name = "lblPostImg";
-            this.lblPostImg.Size = new System.Drawing.Size(58, 13);
-            this.lblPostImg.TabIndex = 31;
-            this.lblPostImg.Text = "post image";
             // 
             // btnPost
             // 
@@ -521,14 +519,6 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // txtPostImage
-            // 
-            this.txtPostImage.Location = new System.Drawing.Point(719, 436);
-            this.txtPostImage.Multiline = true;
-            this.txtPostImage.Name = "txtPostImage";
-            this.txtPostImage.Size = new System.Drawing.Size(347, 33);
-            this.txtPostImage.TabIndex = 35;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -537,7 +527,6 @@
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.Button1);
-            this.Controls.Add(this.lblPostImg);
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";
@@ -550,7 +539,6 @@
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -597,7 +585,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textTitle;
         private System.Windows.Forms.Button btnPost;
-        private System.Windows.Forms.Label lblPostImg;
         private System.Windows.Forms.Button btnTitleToPost;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckedListBox checkCat;
