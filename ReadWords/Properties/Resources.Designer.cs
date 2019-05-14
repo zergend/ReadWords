@@ -62,7 +62,7 @@ namespace ReadWords.Properties {
         
         /// <summary>
         ///   Ищет локализованную строку, похожую на &lt;?php
-        ///
+        ///// post to WordPress site
         ///require_once( dirname(__FILE__) . &apos;/wp-load.php&apos; );
         ///require_once( dirname(__FILE__) . &apos;/wp-admin/includes/admin.php&apos; );
         ///
@@ -71,7 +71,7 @@ namespace ReadWords.Properties {
         ///    &apos;post_content&apos;  =&gt; &apos;###content###&apos;,
         ///    &apos;post_status&apos;   =&gt; &apos;###status###&apos;, 
         ///    &apos;post_author&apos;   =&gt; 1, 
-        ///    &apos;post_category&apos; =&gt; array(1) 
+        ///    &apos;post_category&apos; =&gt; ###category### 
         ///);
         ///
         ///$post_id = wp_insert_post($post_data, true);
@@ -81,13 +81,11 @@ namespace ReadWords.Properties {
         ///
         ///$description = &quot;&quot;;
         ///$file_array = array();
-        ///$tmp = download_url($url);
-        ///
-        ///preg [остаток строки не уместился]&quot;;.
+        ///$tm [остаток строки не уместился]&quot;;.
         /// </summary>
-        public static string upload_post {
+        public static string post_wp {
             get {
-                return ResourceManager.GetString("upload_post", resourceCulture);
+                return ResourceManager.GetString("post_wp", resourceCulture);
             }
         }
     }

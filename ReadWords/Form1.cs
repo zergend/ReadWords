@@ -89,8 +89,7 @@ namespace ReadWords
         }
 
         private void Button2_Click(object sender, EventArgs e)
-        {
-            WPutilites utils = new WPutilites();
+        {            
             int countRow = 0;
 
             if (openFile1.ShowDialog() == DialogResult.OK)
@@ -132,7 +131,7 @@ namespace ReadWords
                         }
                         else
                         {
-                            string title = utils.docTitle(textFromWordDocument, countTitle);
+                            string title = WPutilites.docTitle(textFromWordDocument, countTitle);
 
                             switch (countTitle)
                             {
@@ -187,12 +186,11 @@ namespace ReadWords
         }
 
         private void Button3_Click(object sender, EventArgs e)
-        {
-            WPutilites utils = new WPutilites();
+        {            
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) 
             {
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
-                string[] htmlAT = utils.toAT(folderBrowserDialog1.SelectedPath);
+                string[] htmlAT = WPutilites.toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
                     listBox2.Items.Add(s);                   
@@ -232,8 +230,7 @@ namespace ReadWords
         }
 
         void Panel1_DragDrop(object sender, DragEventArgs e)
-        {
-            WPutilites utils = new WPutilites();
+        {            
             labelDrop.Text = "Папка/файлы приняты";
             DateTime someDate = new DateTime(1582, 10, 5);
             textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
@@ -243,7 +240,7 @@ namespace ReadWords
                 {
                     // paths.AddRange(Directory.GetFiles(obj, "*.*", SearchOption.TopDirectoryOnly));
                     textFolderAT.Text = obj;
-                    string[] htmlAT = utils.toAT(obj);
+                    string[] htmlAT = WPutilites.toAT(obj);
                     listBox2.Items.Clear();
                     foreach (string s in htmlAT)
                         listBox2.Items.Add(s);
@@ -297,13 +294,12 @@ namespace ReadWords
 
         private void Panel1_Click(object sender, EventArgs e)
         {
-            WPutilites utils = new WPutilites();
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK)
             {
                 DateTime someDate = new DateTime(1582, 10, 5);
                 textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
                 textFolderAT.Text = folderBrowserDialog1.SelectedPath;
-                string[] htmlAT = utils.toAT(folderBrowserDialog1.SelectedPath);
+                string[] htmlAT = WPutilites.toAT(folderBrowserDialog1.SelectedPath);
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
                     listBox2.Items.Add(s);
@@ -328,13 +324,13 @@ namespace ReadWords
                     textNew.Text = "http://atkorablino.ru/";
                     break;
                 case 1: // ddt/uoimp
-                    textHost.Text = "";
-                    textUname.Text = "";
-                    textPassword.Text = "";
-                    textPath.Text = "";
-                    textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
-                    textOld.Text = "";
-                    textNew.Text = "";
+                    textHost.Text = "ftp.korablinod.nichost.ru";
+                    textUname.Text = "korablinod_ftp";
+                    textPassword.Text = "2ixh17bw";
+                    textPath.Text = "/korablinoddt.org.ru/docs/news/";
+                    textPath.Text += DateTime.Now.ToString("MM-yyyy") + "/";
+                    textOld.Text = "/korablinoddt.org.ru/docs/";
+                    textNew.Text = "http://korablinoddt.org.ru/";
                     break;
                 case 2: // korablinorono
                     textHost.Text = "ftp.korablino.nichost.ru";
@@ -361,7 +357,6 @@ namespace ReadWords
 
         private void BtnRU_Click(object sender, EventArgs e)
         {
-            WPutilites utils = new WPutilites();
             if (listBox2.Items.Count > 0)
             {
                 string s = string.Empty;
@@ -398,7 +393,7 @@ namespace ReadWords
 
                 string[] res = { "", "" };
                 
-                res = utils.FTPUploadFile(newFolder,
+                res = WPutilites.FTPUploadFile(newFolder,
                                     textHost.Text,
                                     textUname.Text,
                                     textPassword.Text,
@@ -422,7 +417,6 @@ namespace ReadWords
 
         private void BtnPreparePost_Click(object sender, EventArgs e)
         {
-            WPutilites utils = new WPutilites();
             //int countRow = 0;
             string html = string.Empty;
             FileInfo fileInf = new FileInfo(listBox2.SelectedItem.ToString());
@@ -478,8 +472,31 @@ namespace ReadWords
 
         private void BtnPost_Click(object sender, EventArgs e)
         {
+            string res = PostPHP("wp");
+            MessageBox.Show(res);
+            labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
+            listBox2.Items.Clear();
+            textFolderAT.Text = "";
+            textFileName.Text = "";
+            textTitle.Text = "";
+            textPost.Text = "";
+            txtPostImage.Text = "";
+            textBox2.Text = "";
+        }
+
+        string PostPHP(string cms)
+        {
+            // php = Transliteration.Front(php);
+            string writeFile = string.Empty;
+            string phpFile = "post_me.php";
+            string res = string.Empty;
+            string php = string.Empty;
             string dirName = textFolderAT.Text;
+            string urlSite = textNew.Text;
+            string subDirName = @"\uppost\";
             string subDir = @"uppost";
+            
+
             DirectoryInfo dirInfo = new DirectoryInfo(dirName);
             if (!dirInfo.Exists)
             {
@@ -487,31 +504,41 @@ namespace ReadWords
             }
             dirInfo.CreateSubdirectory(subDir);
 
-            WPutilites utils = new WPutilites();
-            string writeFile = "";
 
-            // выбранные категории
-            string[] cats;
-            string catToPHP = string.Empty;
-
-            foreach (object item in checkCat.CheckedItems)
+            
+            cms = cms.ToLower();
+            switch (cms)
             {
-                cats = item.ToString().Split(';');
-                catToPHP += cats[1] + ",";
+                case "wp":
+                    // выбранные категории
+                    string[] cats;
+                    string catToPHP = string.Empty;
+
+                    foreach (object item in checkCat.CheckedItems)
+                    {
+                        cats = item.ToString().Split(';');
+                        catToPHP += cats[1] + ",";
+                    }
+                    catToPHP = "array(" + catToPHP.Trim(',') + ")"; // конец выбранных категорий            
+                    //формируем php-файл для публикации поста на WordPress
+                    php = ReadWords.Properties.Resources.post_wp; //upload_post.txt в ресурсах
+                    php = php.Replace("###title###", textTitle.Text);
+                    php = php.Replace("###content###", textPost.Text);
+                    php = php.Replace("###status###", "draft");
+                    php = php.Replace("###category###", catToPHP);
+                    php = php.Replace("###url###", txtPostImage.Text); // изображение записи
+                   
+                    break;
+                case "joomla":
+
+                    break;
+                default:
+                    break;
             }
-            catToPHP = "array(" + catToPHP.Trim(',') + ")"; // конец выбранных категорий            
 
-            string php = ReadWords.Properties.Resources.upload_post; //upload_post.txt в ресурсах
-            php = php.Replace("###title###", textTitle.Text);
-            php = php.Replace("###content###", textPost.Text);
-            php = php.Replace("###status###", "draft");
-            php = php.Replace("###category###", catToPHP);
-            php = php.Replace("###url###", txtPostImage.Text); // изображение записи
-
-
-            if (Directory.Exists(dirName + @"\uppost\"))
+            if (Directory.Exists(dirName + subDirName))
             {
-                writeFile = dirName + @"\uppost\post_me.php";
+                writeFile = dirName + subDirName + phpFile;
 
                 FileInfo fileInf = new FileInfo(writeFile);
                 if (fileInf.Exists)
@@ -521,20 +548,18 @@ namespace ReadWords
                 {
                     sw.Write(php);
                 }
-            }                                
-
-           string res = string.Empty;
-
-            res = utils.UploadPHP(writeFile,
+            }
+            
+            res = WPutilites.UploadPHP(writeFile,
                                   textHost.Text,
                                   textUname.Text,
                                   textPassword.Text,
                                   textPathPost.Text);
-            if (res != string.Empty) 
+            if (res != string.Empty)
             {
                 //textPost.Text = res;
 
-                webPost.Navigate("http://korablinorono.org.ru/post_me.php");
+                webPost.Navigate(urlSite + phpFile);
 
                 MessageBox.Show("Черновик Поста подготовлен!");
             }
@@ -542,6 +567,8 @@ namespace ReadWords
             {
                 MessageBox.Show("Пост NOT опубликован!");
             }
+
+            return res;
         }
 
         private void BtnTitleToPost_Click(object sender, EventArgs e)

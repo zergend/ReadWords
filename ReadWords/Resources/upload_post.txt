@@ -1,5 +1,5 @@
 <?php
-
+// post to WordPress site
 require_once( dirname(__FILE__) . '/wp-load.php' );
 require_once( dirname(__FILE__) . '/wp-admin/includes/admin.php' );
 

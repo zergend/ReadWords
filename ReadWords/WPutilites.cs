@@ -9,10 +9,10 @@ using System.Text.RegularExpressions;
 
 namespace ReadWords
 {
-    class WPutilites
+    public class WPutilites
     {
         // загружаем изображения на FTP
-        public string[] FTPUploadFile(string newFolder,
+        public static string[] FTPUploadFile(string newFolder,
                                     string hN,
                                     string uN,
                                     string pW,
@@ -100,8 +100,8 @@ namespace ReadWords
         }
 
         // PublicPostToWordpress
-        public string UploadPHP(string localFile,
-                                string hN,
+        public static string UploadPHP(string localFile, 
+                                string hN, 
                                 string uN,
                                 string pW,
                                 string remotePath)
@@ -159,7 +159,7 @@ namespace ReadWords
         ////////////////////
         /// docTitle
         /// 
-        public string docTitle(string s, int i)
+        public static string docTitle(string s, int i)
         {
             string sT = string.Empty;
             Regex regex;
@@ -203,7 +203,7 @@ namespace ReadWords
             }
         }
 
-        public string[] toAT(string dirName)
+        public static string[] toAT(string dirName)
         {
             string[] r = new string[1];
             r[0] = "empty";
