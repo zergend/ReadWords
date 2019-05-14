@@ -485,8 +485,7 @@ namespace ReadWords
         }
 
         string PostPHP(string cms)
-        {
-            // php = Transliteration.Front(php);
+        {            
             string writeFile = string.Empty;
             string phpFile = "post_me.php";
             string res = string.Empty;
@@ -494,8 +493,7 @@ namespace ReadWords
             string dirName = textFolderAT.Text;
             string urlSite = textNew.Text;
             string subDirName = @"\uppost\";
-            string subDir = @"uppost";
-            
+            string subDir = @"uppost";            
 
             DirectoryInfo dirInfo = new DirectoryInfo(dirName);
             if (!dirInfo.Exists)
