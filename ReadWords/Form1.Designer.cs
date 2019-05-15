@@ -74,6 +74,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.checkDraft = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -154,6 +155,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.checkDraft);
             this.tabPage1.Controls.Add(this.txtPostImage);
             this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.checkCat);
@@ -519,6 +521,18 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // checkDraft
+            // 
+            this.checkDraft.AutoSize = true;
+            this.checkDraft.Checked = true;
+            this.checkDraft.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkDraft.Location = new System.Drawing.Point(1073, 420);
+            this.checkDraft.Name = "checkDraft";
+            this.checkDraft.Size = new System.Drawing.Size(53, 17);
+            this.checkDraft.TabIndex = 36;
+            this.checkDraft.Text = "draft?";
+            this.checkDraft.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -590,6 +604,7 @@
         private System.Windows.Forms.CheckedListBox checkCat;
         private System.Windows.Forms.WebBrowser webPost;
         private System.Windows.Forms.TextBox txtPostImage;
+        private System.Windows.Forms.CheckBox checkDraft;
     }
 }
 

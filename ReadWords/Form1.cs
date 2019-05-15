@@ -522,7 +522,10 @@ namespace ReadWords
                     php = ReadWords.Properties.Resources.post_wp; //upload_post.txt в ресурсах
                     php = php.Replace("###title###", textTitle.Text);
                     php = php.Replace("###content###", textPost.Text);
-                    php = php.Replace("###status###", "draft");
+                    if(checkDraft.CheckState == CheckState.Checked)
+                        php = php.Replace("###status###", "draft");
+                    else
+                        php = php.Replace("###status###", "publish");
                     php = php.Replace("###category###", catToPHP);
                     php = php.Replace("###url###", txtPostImage.Text); // изображение записи
                    
