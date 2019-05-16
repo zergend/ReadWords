@@ -61,6 +61,27 @@ namespace ReadWords.Properties {
         }
         
         /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;?php define( &apos;_JEXEC&apos;, 1 );
+        ///// define(&apos;JPATH_BASE&apos;, &apos;/home/korablinod/korablinoddt.org.ru/docs&apos; ); // ddt
+        ///// define(&apos;JPATH_BASE&apos;, &apos;/home/atkorablin/atkorablino.ru/docs&apos; ); // atkorablino
+        /////###ddt-jpath###
+        /////###at-jpath###
+        ///define( &apos;DS&apos;, DIRECTORY_SEPARATOR );
+        ////* Required Files */
+        ///require_once ( JPATH_BASE .DS.&apos;includes&apos;.DS.&apos;defines.php&apos; );
+        ///// /korablinoddt.org.ru/docs/includes/
+        ///require_once ( JPATH_BASE .DS.&apos;includes&apos;.DS.&apos;framework.php&apos; );
+        /// 
+        ////* To use Joomla&apos;s Database Class */
+        /////require_once (  [остаток строки не уместился]&quot;;.
+        /// </summary>
+        public static string post_joomla {
+            get {
+                return ResourceManager.GetString("post_joomla", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Ищет локализованную строку, похожую на &lt;?php
         ///// post to WordPress site
         ///require_once( dirname(__FILE__) . &apos;/wp-load.php&apos; );

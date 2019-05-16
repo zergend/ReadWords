@@ -156,6 +156,9 @@
   <ItemGroup>
     <None Include="Resources\upload_post.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\post_joomla.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\WinSCP.5.15.1\build\WinSCP.targets" Condition="Exists('..\packages\WinSCP.5.15.1\build\WinSCP.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

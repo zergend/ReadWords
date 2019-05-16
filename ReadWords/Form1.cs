@@ -278,7 +278,7 @@ namespace ReadWords
             listWidth.SetSelected(1, true);
             string[] host = { "atkorablino.ru", "ddt/uoimp", "korablinorono" };
             listHost.Items.AddRange(host);
-            listHost.SetSelected(0, true);
+            listHost.SetSelected(2, true);
 
             FileInfo fileInf = new FileInfo(@"C:\IrfanView\i_view32.exe");
             if (fileInf.Exists == false)
@@ -322,8 +322,17 @@ namespace ReadWords
                     textPathPost.Text = "/atkorablino.ru/docs/";
                     textOld.Text = "/atkorablino.ru/docs/";
                     textNew.Text = "http://atkorablino.ru/";
+                    textJPath.Text = "/home/atkorablin/atkorablino.ru/docs";
+                    textFactory.Text = ".DS.'libraries'.DS.'joomla'.DS.'database'.DS.'factory.php'";
+                    // категории
+                    checkCat.Items.Add("Новости техникума;34");
+                    checkCat.Items.Add("Конкурсы (методработа);48");
+                    checkCat.Items.Add("Открытые уроки и внеклассные мероприятия;29");
+                    checkCat.Items.Add("Вебинары;71");
+                    checkCat.SetItemChecked(0, true);
+
                     break;
-                case 1: // ddt/uoimp
+                case 1: // ddt
                     textHost.Text = "ftp.korablinod.nichost.ru";
                     textUname.Text = "korablinod_ftp";
                     textPassword.Text = "2ixh17bw";
@@ -331,6 +340,11 @@ namespace ReadWords
                     textPath.Text += DateTime.Now.ToString("MM-yyyy") + "/";
                     textOld.Text = "/korablinoddt.org.ru/docs/";
                     textNew.Text = "http://korablinoddt.org.ru/";
+                    textJPath.Text = "/home/korablinod/korablinoddt.org.ru/docs";
+                    textFactory.Text = ".DS.'libraries'.DS.'joomla'.DS.'factory.php'";
+                    // категории
+                    checkCat.Items.Add("Новости;20");
+                    checkCat.SetItemChecked(0, true);
                     break;
                 case 2: // korablinorono
                     textHost.Text = "ftp.korablino.nichost.ru";
@@ -341,8 +355,10 @@ namespace ReadWords
                     textPathPost.Text = "/korablinorono.org.ru/docs/";
                     textOld.Text = "/korablinorono.org.ru/docs/";
                     textNew.Text = "http://korablinorono.org.ru/";
+                    textJPath.Text = "";
+                    textFactory.Text = "";
                     // категории
-                    checkCat.Items.Add("Анонсы, объявления;22");
+                    checkCat.Items.Add("Новости, объявления;22");
                     checkCat.Items.Add("Конкурсы для обучающихся;46");
                     checkCat.Items.Add("Конкурсы для педагогов;47");
                     checkCat.SetItemChecked(0, true);
@@ -472,14 +488,30 @@ namespace ReadWords
 
         private void BtnPost_Click(object sender, EventArgs e)
         {
-            string res = PostPHP("wp");
-            MessageBox.Show(res);
+            string res = string.Empty;                
+            switch (listHost.SelectedIndex)
+            {
+                case 0: // atkorablino.ru
+                    res = PostPHP("joomla");
+                    break;
+                case 1: // ddt
+                    res = PostPHP("joomla");
+                    break;
+                case 2: // korablinorono
+                    res = PostPHP("wp");
+                    break;
+                case -1:
+                    break;
+                default:
+                    break;
+            }
+            // MessageBox.Show(res);
             labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
             listBox2.Items.Clear();
             textFolderAT.Text = "";
             textFileName.Text = "";
             textTitle.Text = "";
-            textPost.Text = "";
+            textPost.Text = res;
             txtPostImage.Text = "";
             textBox2.Text = "";
         }
@@ -487,31 +519,19 @@ namespace ReadWords
         string PostPHP(string cms)
         {            
             string writeFile = string.Empty;
+            string urlSite = textNew.Text;
             string phpFile = "post_me.php";
             string res = string.Empty;
             string php = string.Empty;
-            string dirName = textFolderAT.Text;
-            string urlSite = textNew.Text;
-            string subDirName = @"\uppost\";
-            string subDir = @"uppost";            
-
-            DirectoryInfo dirInfo = new DirectoryInfo(dirName);
-            if (!dirInfo.Exists)
-            {
-                dirInfo.Create();
-            }
-            dirInfo.CreateSubdirectory(subDir);
-
-
             
+            string[] cats;
+            string catToPHP = string.Empty;
+
             cms = cms.ToLower();
             switch (cms)
             {
                 case "wp":
                     // выбранные категории
-                    string[] cats;
-                    string catToPHP = string.Empty;
-
                     foreach (object item in checkCat.CheckedItems)
                     {
                         cats = item.ToString().Split(';');
@@ -528,14 +548,79 @@ namespace ReadWords
                         php = php.Replace("###status###", "publish");
                     php = php.Replace("###category###", catToPHP);
                     php = php.Replace("###url###", txtPostImage.Text); // изображение записи
-                   
+
+                    writeFile = WritePhp(php);
                     break;
                 case "joomla":
+                    // выбранные категории
+                    foreach (object item in checkCat.CheckedItems)
+                    {
+                        cats = item.ToString().Split(';');
+                        catToPHP = cats[1]; // в Joomla можно опубликовать материал только в одной категории
 
+                        //формируем php-файл для публикации поста на Joomla
+                        php = ReadWords.Properties.Resources.post_joomla; //post_joomla.txt в ресурсах
+                        php = php.Replace("###jpath###", textJPath.Text);
+                        php = php.Replace("###factory###", textFactory.Text);
+                        php = php.Replace("###title###", textTitle.Text);
+                        php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + "_" + catToPHP);
+                        php = php.Replace("###introtext###", textPost.Text);
+                        if (checkDraft.CheckState == CheckState.Checked)
+                            php = php.Replace("###state###", "0");
+                        else
+                            php = php.Replace("###state###", "1");
+
+                        php = php.Replace("###catid###", catToPHP);
+                        //php = php.Replace(@""", "\"");
+
+                        writeFile = WritePhp(php);
+                    }                             
+ 
                     break;
                 default:
                     break;
+            }            
+
+            res = WPutilites.UploadPHP(writeFile,
+                                  textHost.Text,
+                                  textUname.Text,
+                                  textPassword.Text,
+                                  textPathPost.Text);
+            if (res != string.Empty)
+            {
+                webPost.Navigate(urlSite + phpFile);
+                // а теперь загрузим повторно "пустой" файл
+                // writeFile = WritePhp("<h1>hello, world!</h1>");
+
+                /* res = WPutilites.UploadPHP(writeFile,
+                                      textHost.Text,
+                                      textUname.Text,
+                                      textPassword.Text,
+                                      textPathPost.Text); */
+                // MessageBox.Show("Черновик Поста подготовлен!");
             }
+            else
+            {
+                MessageBox.Show("Пост NOT опубликован!");
+            }
+
+            return res;
+        }
+
+        string WritePhp(string php)
+        {
+            string writeFile = string.Empty;
+            string phpFile = "post_me.php";
+            string dirName = textFolderAT.Text;
+            string subDirName = @"\uppost\";
+            string subDir = @"uppost";
+
+            DirectoryInfo dirInfo = new DirectoryInfo(dirName);
+            if (!dirInfo.Exists)
+            {
+                dirInfo.Create();
+            }
+            dirInfo.CreateSubdirectory(subDir);
 
             if (Directory.Exists(dirName + subDirName))
             {
@@ -545,31 +630,11 @@ namespace ReadWords
                 if (fileInf.Exists)
                     fileInf.Delete();
 
-                using (StreamWriter sw = new StreamWriter(writeFile, true, System.Text.Encoding.UTF8))
-                {
-                    sw.Write(php);
-                }
-            }
-            
-            res = WPutilites.UploadPHP(writeFile,
-                                  textHost.Text,
-                                  textUname.Text,
-                                  textPassword.Text,
-                                  textPathPost.Text);
-            if (res != string.Empty)
-            {
-                //textPost.Text = res;
-
-                webPost.Navigate(urlSite + phpFile);
-
-                MessageBox.Show("Черновик Поста подготовлен!");
-            }
-            else
-            {
-                MessageBox.Show("Пост NOT опубликован!");
+                StreamWriter sw = new StreamWriter(writeFile, true, new System.Text.UTF8Encoding(false));
+                sw.Write(php);                
             }
 
-            return res;
+            return writeFile;
         }
 
         private void BtnTitleToPost_Click(object sender, EventArgs e)
@@ -584,6 +649,16 @@ namespace ReadWords
             {
                 MessageBox.Show("Возможно, не выделен текст в заголовке!");
             }
+        }
+
+        private void BtnTransFN_Click(object sender, EventArgs e)
+        {
+            textFileName.Text = Transliteration.Front(textFileName.Text).ToLower();
+        }
+
+        private void WebPost_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            MessageBox.Show(webPost.DocumentText); 
         }
     }     
 }

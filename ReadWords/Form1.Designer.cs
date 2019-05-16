@@ -37,6 +37,13 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.textFactory = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textJPath = new System.Windows.Forms.TextBox();
+            this.btnTransFN = new System.Windows.Forms.Button();
+            this.checkDraft = new System.Windows.Forms.CheckBox();
             this.txtPostImage = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.checkCat = new System.Windows.Forms.CheckedListBox();
@@ -62,7 +69,6 @@
             this.textHost = new System.Windows.Forms.TextBox();
             this.listHost = new System.Windows.Forms.ListBox();
             this.listWidth = new System.Windows.Forms.ListBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.textFileName = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.labelDrop = new System.Windows.Forms.Label();
@@ -74,9 +80,9 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.checkDraft = new System.Windows.Forms.CheckBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage2.SuspendLayout();
@@ -155,6 +161,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.btnTransFN);
             this.tabPage1.Controls.Add(this.checkDraft);
             this.tabPage1.Controls.Add(this.txtPostImage);
             this.tabPage1.Controls.Add(this.label9);
@@ -181,7 +189,6 @@
             this.tabPage1.Controls.Add(this.textHost);
             this.tabPage1.Controls.Add(this.listHost);
             this.tabPage1.Controls.Add(this.listWidth);
-            this.tabPage1.Controls.Add(this.label2);
             this.tabPage1.Controls.Add(this.textFileName);
             this.tabPage1.Controls.Add(this.panel1);
             this.tabPage1.Controls.Add(this.btnRU);
@@ -197,6 +204,75 @@
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.textFactory);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.textJPath);
+            this.groupBox1.Location = new System.Drawing.Point(270, 7);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(222, 144);
+            this.groupBox1.TabIndex = 38;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Joomla only";
+            // 
+            // textFactory
+            // 
+            this.textFactory.Location = new System.Drawing.Point(6, 99);
+            this.textFactory.Multiline = true;
+            this.textFactory.Name = "textFactory";
+            this.textFactory.Size = new System.Drawing.Size(210, 34);
+            this.textFactory.TabIndex = 3;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(7, 83);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(84, 13);
+            this.label10.TabIndex = 2;
+            this.label10.Text = "factory.php (db):";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(7, 20);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(37, 13);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "JPath:";
+            // 
+            // textJPath
+            // 
+            this.textJPath.Location = new System.Drawing.Point(6, 36);
+            this.textJPath.Multiline = true;
+            this.textJPath.Name = "textJPath";
+            this.textJPath.Size = new System.Drawing.Size(210, 40);
+            this.textJPath.TabIndex = 0;
+            // 
+            // btnTransFN
+            // 
+            this.btnTransFN.Location = new System.Drawing.Point(500, 6);
+            this.btnTransFN.Name = "btnTransFN";
+            this.btnTransFN.Size = new System.Drawing.Size(39, 21);
+            this.btnTransFN.TabIndex = 37;
+            this.btnTransFN.Text = "f.n>tr>";
+            this.btnTransFN.UseVisualStyleBackColor = true;
+            this.btnTransFN.Click += new System.EventHandler(this.BtnTransFN_Click);
+            // 
+            // checkDraft
+            // 
+            this.checkDraft.AutoSize = true;
+            this.checkDraft.Checked = true;
+            this.checkDraft.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkDraft.Location = new System.Drawing.Point(1073, 420);
+            this.checkDraft.Name = "checkDraft";
+            this.checkDraft.Size = new System.Drawing.Size(53, 17);
+            this.checkDraft.TabIndex = 36;
+            this.checkDraft.Text = "draft?";
+            this.checkDraft.UseVisualStyleBackColor = true;
+            // 
             // txtPostImage
             // 
             this.txtPostImage.Location = new System.Drawing.Point(719, 436);
@@ -208,7 +284,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(272, 144);
+            this.label9.Location = new System.Drawing.Point(272, 154);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(52, 13);
             this.label9.TabIndex = 34;
@@ -218,7 +294,7 @@
             // 
             this.checkCat.CheckOnClick = true;
             this.checkCat.FormattingEnabled = true;
-            this.checkCat.Location = new System.Drawing.Point(269, 160);
+            this.checkCat.Location = new System.Drawing.Point(269, 168);
             this.checkCat.Name = "checkCat";
             this.checkCat.Size = new System.Drawing.Size(223, 169);
             this.checkCat.TabIndex = 33;
@@ -251,6 +327,7 @@
             this.webPost.Name = "webPost";
             this.webPost.Size = new System.Drawing.Size(439, 100);
             this.webPost.TabIndex = 29;
+            this.webPost.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebPost_DocumentCompleted);
             // 
             // textPost
             // 
@@ -413,20 +490,11 @@
             this.listWidth.Size = new System.Drawing.Size(210, 95);
             this.listWidth.TabIndex = 11;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(496, 6);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(67, 13);
-            this.label2.TabIndex = 10;
-            this.label2.Text = "Имя файла:";
-            // 
             // textFileName
             // 
-            this.textFileName.Location = new System.Drawing.Point(569, 6);
+            this.textFileName.Location = new System.Drawing.Point(545, 6);
             this.textFileName.Name = "textFileName";
-            this.textFileName.Size = new System.Drawing.Size(141, 20);
+            this.textFileName.Size = new System.Drawing.Size(165, 20);
             this.textFileName.TabIndex = 9;
             // 
             // panel1
@@ -437,7 +505,7 @@
             this.panel1.Controls.Add(this.labelDrop);
             this.panel1.Location = new System.Drawing.Point(6, 6);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(488, 122);
+            this.panel1.Size = new System.Drawing.Size(257, 122);
             this.panel1.TabIndex = 7;
             this.panel1.Click += new System.EventHandler(this.Panel1_Click);
             this.panel1.DragDrop += new System.Windows.Forms.DragEventHandler(this.Panel1_DragDrop);
@@ -446,9 +514,9 @@
             // 
             // labelDrop
             // 
-            this.labelDrop.Location = new System.Drawing.Point(1, 52);
+            this.labelDrop.Location = new System.Drawing.Point(1, 0);
             this.labelDrop.Name = "labelDrop";
-            this.labelDrop.Size = new System.Drawing.Size(484, 14);
+            this.labelDrop.Size = new System.Drawing.Size(254, 33);
             this.labelDrop.TabIndex = 0;
             this.labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
             this.labelDrop.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -521,18 +589,6 @@
             this.tabPage3.Text = "tabPage3";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
-            // checkDraft
-            // 
-            this.checkDraft.AutoSize = true;
-            this.checkDraft.Checked = true;
-            this.checkDraft.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDraft.Location = new System.Drawing.Point(1073, 420);
-            this.checkDraft.Name = "checkDraft";
-            this.checkDraft.Size = new System.Drawing.Size(53, 17);
-            this.checkDraft.TabIndex = 36;
-            this.checkDraft.Text = "draft?";
-            this.checkDraft.UseVisualStyleBackColor = true;
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -548,6 +604,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage2.ResumeLayout(false);
@@ -577,7 +635,6 @@
         private System.Windows.Forms.Button btnRU;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label labelDrop;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textFileName;
         private System.Windows.Forms.ListBox listWidth;
         private System.Windows.Forms.ListBox listHost;
@@ -605,6 +662,12 @@
         private System.Windows.Forms.WebBrowser webPost;
         private System.Windows.Forms.TextBox txtPostImage;
         private System.Windows.Forms.CheckBox checkDraft;
+        private System.Windows.Forms.Button btnTransFN;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textJPath;
+        private System.Windows.Forms.TextBox textFactory;
+        private System.Windows.Forms.Label label10;
     }
 }
 

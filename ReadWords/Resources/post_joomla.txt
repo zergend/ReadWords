@@ -1,0 +1,40 @@
+<?php define( '_JEXEC', 1 );
+// define('JPATH_BASE', '/home/korablinod/korablinoddt.org.ru/docs' ); // ddt
+// define('JPATH_BASE', '/home/atkorablin/atkorablino.ru/docs' ); // atkorablino
+define('JPATH_BASE', '###jpath###' );
+
+define( 'DS', DIRECTORY_SEPARATOR );
+/* Required Files */
+require_once ( JPATH_BASE .DS.'includes'.DS.'defines.php' );
+require_once ( JPATH_BASE .DS.'includes'.DS.'framework.php' );
+ 
+/* To use Joomla's Database Class */
+//require_once ( JPATH_BASE .DS.'libraries'.DS.'joomla'.DS.'database'.DS.'factory.php' ); // atkorablino
+//require_once ( JPATH_BASE .DS.'libraries'.DS.'joomla'.DS.'factory.php' ); // ddt
+require_once ( JPATH_BASE ###factory### );
+
+/* Create the Application */
+$mainframe =& JFactory::getApplication('site');
+$rootpath =& JURI::root();
+
+$db = &JFactory::getDBO();
+ 
+function sqlfilter($s) {
+  global $db;
+  return $db->Quote($s); // "чистит" все передаваемые в sql запросе данные
+}
+
+$publish = date("Y-m-d H:i:s", strtotime( "-3 hours" ) ); // почему-то при публикации в базе время сохраняется на 3 часа больше, корректируем
+
+/* дальше - sql-запрос: 
+state (int) - 1 - опубликовано, 0 - не опубликовано
+catid (int) - id категории
+*/
+$query = "INSERT INTO #__content (title, alias, introtext, state, catid, created, publish_up) VALUES ('###title###', '###alias###', '###introtext###', ###state###, ###catid###, '" . $publish . "', '" . $publish . "')"; 
+
+
+$db->setQuery($query);
+$db->query(); // выполнить запрос
+
+echo "-= Yes! =- ";
+echo $query;

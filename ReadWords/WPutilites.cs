@@ -99,7 +99,7 @@ namespace ReadWords
 
         }
 
-        // PublicPostToWordpress
+        // PublicPostToWordpressJoomla
         public static string UploadPHP(string localFile, 
                                 string hN, 
                                 string uN,
