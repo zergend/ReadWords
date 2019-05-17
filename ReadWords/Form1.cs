@@ -542,10 +542,12 @@ namespace ReadWords
                     php = ReadWords.Properties.Resources.post_wp; //upload_post.txt в ресурсах
                     php = php.Replace("###title###", textTitle.Text);
                     php = php.Replace("###content###", textPost.Text);
-                    if(checkDraft.CheckState == CheckState.Checked)
+
+                    if (checkDraft.CheckState == CheckState.Checked)
                         php = php.Replace("###status###", "draft");
                     else
                         php = php.Replace("###status###", "publish");
+
                     php = php.Replace("###category###", catToPHP);
                     php = php.Replace("###url###", txtPostImage.Text); // изображение записи
 
@@ -564,14 +566,17 @@ namespace ReadWords
                         php = php.Replace("###factory###", textFactory.Text);
                         php = php.Replace("###title###", textTitle.Text);
                         php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + "_" + catToPHP);
-                        php = php.Replace("###introtext###", textPost.Text);
+                        // заменим двойные кавычки в тексте на одинарные (экранированные для БД), 
+                        // т.к. двойные вызывают ошибку при запросе к БД
+                        php = php.Replace("###introtext###", textPost.Text.Replace("\"", "''"));
+
                         if (checkDraft.CheckState == CheckState.Checked)
                             php = php.Replace("###state###", "0");
                         else
                             php = php.Replace("###state###", "1");
 
                         php = php.Replace("###catid###", catToPHP);
-                        //php = php.Replace(@""", "\"");
+                        //php = php.Replace(@""", "\"");                        
 
                         writeFile = WritePhp(php);
                     }                             
@@ -590,13 +595,16 @@ namespace ReadWords
             {
                 webPost.Navigate(urlSite + phpFile);
                 // а теперь загрузим повторно "пустой" файл
-                // writeFile = WritePhp("<h1>hello, world!</h1>");
 
-                /* res = WPutilites.UploadPHP(writeFile,
+                /* writeFile = WritePhp("<h1>hello, world!</h1>");
+
+                res = WPutilites.UploadPHP(writeFile,
                                       textHost.Text,
                                       textUname.Text,
                                       textPassword.Text,
-                                      textPathPost.Text); */
+                                      textPathPost.Text);
+                */
+
                 // MessageBox.Show("Черновик Поста подготовлен!");
             }
             else
@@ -630,8 +638,11 @@ namespace ReadWords
                 if (fileInf.Exists)
                     fileInf.Delete();
 
-                StreamWriter sw = new StreamWriter(writeFile, true, new System.Text.UTF8Encoding(false));
-                sw.Write(php);                
+                // UTF8Encoding(false) UTF8 without BOM
+                using (StreamWriter sw = new StreamWriter(writeFile, true, new System.Text.UTF8Encoding(false)))
+                {
+                    sw.Write(php);
+                }
             }
 
             return writeFile;

@@ -30,8 +30,9 @@ $publish = date("Y-m-d H:i:s", strtotime( "-3 hours" ) ); // почему-то при публи
 state (int) - 1 - опубликовано, 0 - не опубликовано
 catid (int) - id категории
 */
-$query = "INSERT INTO #__content (title, alias, introtext, state, catid, created, publish_up) VALUES ('###title###', '###alias###', '###introtext###', ###state###, ###catid###, '" . $publish . "', '" . $publish . "')"; 
+$query = "INSERT INTO #__content (`title`, `alias`, `introtext`, `state`, `catid`, `created`, `publish_up`) VALUES ('###title###', '###alias###', '###introtext###', ###state###, ###catid###, '" . $publish . "', '" . $publish . "')"; 
 
+// mb_convert_encoding($query, "UTF-8", "HTML-ENTITIES");
 
 $db->setQuery($query);
 $db->query(); // выполнить запрос
