@@ -45,7 +45,6 @@
             this.btnTransFN = new System.Windows.Forms.Button();
             this.checkDraft = new System.Windows.Forms.CheckBox();
             this.txtPostImage = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
             this.checkCat = new System.Windows.Forms.CheckedListBox();
             this.btnTitleToPost = new System.Windows.Forms.Button();
             this.btnPost = new System.Windows.Forms.Button();
@@ -80,12 +79,18 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.tabPage3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // Button1
@@ -108,7 +113,7 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(593, 520);
+            this.btnClose.Location = new System.Drawing.Point(842, 520);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(145, 41);
             this.btnClose.TabIndex = 2;
@@ -156,16 +161,15 @@
             this.tabControl1.Location = new System.Drawing.Point(12, 12);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(1178, 502);
+            this.tabControl1.Size = new System.Drawing.Size(975, 502);
             this.tabControl1.TabIndex = 11;
             // 
             // tabPage1
             // 
-            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.btnTransFN);
             this.tabPage1.Controls.Add(this.checkDraft);
             this.tabPage1.Controls.Add(this.txtPostImage);
-            this.tabPage1.Controls.Add(this.label9);
             this.tabPage1.Controls.Add(this.checkCat);
             this.tabPage1.Controls.Add(this.btnTitleToPost);
             this.tabPage1.Controls.Add(this.btnPost);
@@ -174,19 +178,8 @@
             this.tabPage1.Controls.Add(this.label8);
             this.tabPage1.Controls.Add(this.textTitle);
             this.tabPage1.Controls.Add(this.btnPreparePost);
-            this.tabPage1.Controls.Add(this.label7);
-            this.tabPage1.Controls.Add(this.textPathPost);
-            this.tabPage1.Controls.Add(this.label6);
-            this.tabPage1.Controls.Add(this.textNew);
-            this.tabPage1.Controls.Add(this.textOld);
             this.tabPage1.Controls.Add(this.label5);
             this.tabPage1.Controls.Add(this.textPath);
-            this.tabPage1.Controls.Add(this.label4);
-            this.tabPage1.Controls.Add(this.textPassword);
-            this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.textUname);
-            this.tabPage1.Controls.Add(this.label1);
-            this.tabPage1.Controls.Add(this.textHost);
             this.tabPage1.Controls.Add(this.listHost);
             this.tabPage1.Controls.Add(this.listWidth);
             this.tabPage1.Controls.Add(this.textFileName);
@@ -199,7 +192,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1170, 476);
+            this.tabPage1.Size = new System.Drawing.Size(967, 476);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -210,9 +203,9 @@
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.textJPath);
-            this.groupBox1.Location = new System.Drawing.Point(270, 7);
+            this.groupBox1.Location = new System.Drawing.Point(6, 198);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(222, 144);
+            this.groupBox1.Size = new System.Drawing.Size(229, 144);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Joomla only";
@@ -253,7 +246,7 @@
             // 
             // btnTransFN
             // 
-            this.btnTransFN.Location = new System.Drawing.Point(500, 6);
+            this.btnTransFN.Location = new System.Drawing.Point(269, 358);
             this.btnTransFN.Name = "btnTransFN";
             this.btnTransFN.Size = new System.Drawing.Size(39, 21);
             this.btnTransFN.TabIndex = 37;
@@ -266,7 +259,7 @@
             this.checkDraft.AutoSize = true;
             this.checkDraft.Checked = true;
             this.checkDraft.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkDraft.Location = new System.Drawing.Point(1073, 420);
+            this.checkDraft.Location = new System.Drawing.Point(812, 446);
             this.checkDraft.Name = "checkDraft";
             this.checkDraft.Size = new System.Drawing.Size(53, 17);
             this.checkDraft.TabIndex = 36;
@@ -275,33 +268,24 @@
             // 
             // txtPostImage
             // 
-            this.txtPostImage.Location = new System.Drawing.Point(719, 436);
+            this.txtPostImage.Location = new System.Drawing.Point(269, 442);
             this.txtPostImage.Multiline = true;
             this.txtPostImage.Name = "txtPostImage";
-            this.txtPostImage.Size = new System.Drawing.Size(347, 33);
+            this.txtPostImage.Size = new System.Drawing.Size(418, 26);
             this.txtPostImage.TabIndex = 35;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(272, 154);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 13);
-            this.label9.TabIndex = 34;
-            this.label9.Text = "Рубрики:";
             // 
             // checkCat
             // 
             this.checkCat.CheckOnClick = true;
             this.checkCat.FormattingEnabled = true;
-            this.checkCat.Location = new System.Drawing.Point(269, 168);
+            this.checkCat.Location = new System.Drawing.Point(269, 108);
             this.checkCat.Name = "checkCat";
-            this.checkCat.Size = new System.Drawing.Size(223, 169);
+            this.checkCat.Size = new System.Drawing.Size(242, 139);
             this.checkCat.TabIndex = 33;
             // 
             // btnTitleToPost
             // 
-            this.btnTitleToPost.Location = new System.Drawing.Point(719, 23);
+            this.btnTitleToPost.Location = new System.Drawing.Point(517, 35);
             this.btnTitleToPost.Name = "btnTitleToPost";
             this.btnTitleToPost.Size = new System.Drawing.Size(27, 23);
             this.btnTitleToPost.TabIndex = 32;
@@ -312,7 +296,7 @@
             // btnPost
             // 
             this.btnPost.Enabled = false;
-            this.btnPost.Location = new System.Drawing.Point(1072, 447);
+            this.btnPost.Location = new System.Drawing.Point(870, 445);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(91, 23);
             this.btnPost.TabIndex = 30;
@@ -322,26 +306,26 @@
             // 
             // webPost
             // 
-            this.webPost.Location = new System.Drawing.Point(724, 313);
+            this.webPost.Location = new System.Drawing.Point(693, 366);
             this.webPost.MinimumSize = new System.Drawing.Size(20, 20);
             this.webPost.Name = "webPost";
-            this.webPost.Size = new System.Drawing.Size(439, 100);
+            this.webPost.Size = new System.Drawing.Size(268, 70);
             this.webPost.TabIndex = 29;
             this.webPost.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebPost_DocumentCompleted);
             // 
             // textPost
             // 
-            this.textPost.Location = new System.Drawing.Point(719, 52);
+            this.textPost.Location = new System.Drawing.Point(517, 64);
             this.textPost.Multiline = true;
             this.textPost.Name = "textPost";
             this.textPost.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textPost.Size = new System.Drawing.Size(444, 255);
+            this.textPost.Size = new System.Drawing.Size(444, 284);
             this.textPost.TabIndex = 28;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(716, 6);
+            this.label8.Location = new System.Drawing.Point(514, 18);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(30, 13);
             this.label8.TabIndex = 27;
@@ -349,16 +333,16 @@
             // 
             // textTitle
             // 
-            this.textTitle.Location = new System.Drawing.Point(746, 6);
+            this.textTitle.Location = new System.Drawing.Point(544, 7);
             this.textTitle.Multiline = true;
             this.textTitle.Name = "textTitle";
-            this.textTitle.Size = new System.Drawing.Size(418, 40);
+            this.textTitle.Size = new System.Drawing.Size(418, 51);
             this.textTitle.TabIndex = 26;
             // 
             // btnPreparePost
             // 
             this.btnPreparePost.Enabled = false;
-            this.btnPreparePost.Location = new System.Drawing.Point(606, 447);
+            this.btnPreparePost.Location = new System.Drawing.Point(693, 445);
             this.btnPreparePost.Name = "btnPreparePost";
             this.btnPreparePost.Size = new System.Drawing.Size(103, 23);
             this.btnPreparePost.TabIndex = 12;
@@ -369,7 +353,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(503, 400);
+            this.label7.Location = new System.Drawing.Point(261, 157);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(143, 13);
             this.label7.TabIndex = 25;
@@ -377,15 +361,15 @@
             // 
             // textPathPost
             // 
-            this.textPathPost.Location = new System.Drawing.Point(500, 416);
+            this.textPathPost.Location = new System.Drawing.Point(258, 173);
             this.textPathPost.Name = "textPathPost";
-            this.textPathPost.Size = new System.Drawing.Size(209, 20);
+            this.textPathPost.Size = new System.Drawing.Size(242, 20);
             this.textPathPost.TabIndex = 24;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(271, 340);
+            this.label6.Location = new System.Drawing.Point(14, 26);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(87, 13);
             this.label6.TabIndex = 23;
@@ -393,7 +377,7 @@
             // 
             // textNew
             // 
-            this.textNew.Location = new System.Drawing.Point(268, 401);
+            this.textNew.Location = new System.Drawing.Point(11, 87);
             this.textNew.Multiline = true;
             this.textNew.Name = "textNew";
             this.textNew.Size = new System.Drawing.Size(224, 35);
@@ -401,7 +385,7 @@
             // 
             // textOld
             // 
-            this.textOld.Location = new System.Drawing.Point(268, 356);
+            this.textOld.Location = new System.Drawing.Point(11, 42);
             this.textOld.Multiline = true;
             this.textOld.Name = "textOld";
             this.textOld.Size = new System.Drawing.Size(224, 39);
@@ -410,7 +394,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(503, 340);
+            this.label5.Location = new System.Drawing.Point(272, 381);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(90, 13);
             this.label5.TabIndex = 20;
@@ -418,16 +402,16 @@
             // 
             // textPath
             // 
-            this.textPath.Location = new System.Drawing.Point(500, 356);
+            this.textPath.Location = new System.Drawing.Point(269, 397);
             this.textPath.Multiline = true;
             this.textPath.Name = "textPath";
-            this.textPath.Size = new System.Drawing.Size(210, 39);
+            this.textPath.Size = new System.Drawing.Size(418, 26);
             this.textPath.TabIndex = 19;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(503, 297);
+            this.label4.Location = new System.Drawing.Point(11, 112);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(55, 13);
             this.label4.TabIndex = 18;
@@ -435,7 +419,7 @@
             // 
             // textPassword
             // 
-            this.textPassword.Location = new System.Drawing.Point(500, 313);
+            this.textPassword.Location = new System.Drawing.Point(8, 128);
             this.textPassword.Name = "textPassword";
             this.textPassword.PasswordChar = '*';
             this.textPassword.Size = new System.Drawing.Size(210, 20);
@@ -444,7 +428,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(503, 254);
+            this.label3.Location = new System.Drawing.Point(11, 69);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(36, 13);
             this.label3.TabIndex = 16;
@@ -452,7 +436,7 @@
             // 
             // textUname
             // 
-            this.textUname.Location = new System.Drawing.Point(500, 270);
+            this.textUname.Location = new System.Drawing.Point(8, 85);
             this.textUname.Name = "textUname";
             this.textUname.Size = new System.Drawing.Size(210, 20);
             this.textUname.TabIndex = 15;
@@ -460,7 +444,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(503, 211);
+            this.label1.Location = new System.Drawing.Point(11, 26);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 13);
             this.label1.TabIndex = 14;
@@ -468,7 +452,7 @@
             // 
             // textHost
             // 
-            this.textHost.Location = new System.Drawing.Point(500, 227);
+            this.textHost.Location = new System.Drawing.Point(8, 42);
             this.textHost.Name = "textHost";
             this.textHost.Size = new System.Drawing.Size(210, 20);
             this.textHost.TabIndex = 13;
@@ -476,25 +460,25 @@
             // listHost
             // 
             this.listHost.FormattingEnabled = true;
-            this.listHost.Location = new System.Drawing.Point(500, 134);
+            this.listHost.Location = new System.Drawing.Point(269, 7);
             this.listHost.Name = "listHost";
-            this.listHost.Size = new System.Drawing.Size(210, 69);
+            this.listHost.Size = new System.Drawing.Size(118, 95);
             this.listHost.TabIndex = 12;
             this.listHost.SelectedIndexChanged += new System.EventHandler(this.ListHost_SelectedIndexChanged);
             // 
             // listWidth
             // 
             this.listWidth.FormattingEnabled = true;
-            this.listWidth.Location = new System.Drawing.Point(500, 33);
+            this.listWidth.Location = new System.Drawing.Point(393, 7);
             this.listWidth.Name = "listWidth";
-            this.listWidth.Size = new System.Drawing.Size(210, 95);
+            this.listWidth.Size = new System.Drawing.Size(118, 95);
             this.listWidth.TabIndex = 11;
             // 
             // textFileName
             // 
-            this.textFileName.Location = new System.Drawing.Point(545, 6);
+            this.textFileName.Location = new System.Drawing.Point(314, 358);
             this.textFileName.Name = "textFileName";
-            this.textFileName.Size = new System.Drawing.Size(165, 20);
+            this.textFileName.Size = new System.Drawing.Size(373, 20);
             this.textFileName.TabIndex = 9;
             // 
             // panel1
@@ -523,9 +507,9 @@
             // 
             // btnRU
             // 
-            this.btnRU.Location = new System.Drawing.Point(389, 447);
+            this.btnRU.Location = new System.Drawing.Point(147, 446);
             this.btnRU.Name = "btnRU";
-            this.btnRU.Size = new System.Drawing.Size(103, 23);
+            this.btnRU.Size = new System.Drawing.Size(116, 23);
             this.btnRU.TabIndex = 6;
             this.btnRU.Text = "(1) Resize+Upload";
             this.btnRU.UseVisualStyleBackColor = true;
@@ -536,7 +520,7 @@
             this.pictureBox1.BackColor = System.Drawing.Color.DimGray;
             this.pictureBox1.Location = new System.Drawing.Point(6, 367);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(163, 103);
+            this.pictureBox1.Size = new System.Drawing.Size(135, 103);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -546,16 +530,16 @@
             this.listBox2.FormattingEnabled = true;
             this.listBox2.Location = new System.Drawing.Point(6, 160);
             this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(257, 134);
+            this.listBox2.Size = new System.Drawing.Size(257, 199);
             this.listBox2.TabIndex = 4;
             this.listBox2.SelectedIndexChanged += new System.EventHandler(this.ListBox2_SelectedIndexChanged);
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(6, 297);
+            this.textBox2.Location = new System.Drawing.Point(147, 367);
             this.textBox2.Multiline = true;
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(256, 64);
+            this.textBox2.Size = new System.Drawing.Size(116, 73);
             this.textBox2.TabIndex = 3;
             // 
             // textFolderAT
@@ -574,26 +558,67 @@
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1170, 476);
+            this.tabPage2.Size = new System.Drawing.Size(972, 476);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Обработка Word";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.groupBox3);
+            this.tabPage3.Controls.Add(this.groupBox2);
+            this.tabPage3.Controls.Add(this.groupBox1);
+            this.tabPage3.Controls.Add(this.textPathPost);
+            this.tabPage3.Controls.Add(this.label7);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(1170, 476);
+            this.tabPage3.Size = new System.Drawing.Size(972, 476);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "tabPage3";
+            this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.label1);
+            this.groupBox2.Controls.Add(this.textHost);
+            this.groupBox2.Controls.Add(this.textUname);
+            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.textPassword);
+            this.groupBox2.Controls.Add(this.label4);
+            this.groupBox2.Location = new System.Drawing.Point(6, 16);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(229, 160);
+            this.groupBox2.TabIndex = 38;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "ftp";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label6);
+            this.groupBox3.Controls.Add(this.textOld);
+            this.groupBox3.Controls.Add(this.textNew);
+            this.groupBox3.Location = new System.Drawing.Point(258, 16);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(245, 135);
+            this.groupBox3.TabIndex = 38;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Replace";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(272, 427);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(84, 13);
+            this.label9.TabIndex = 38;
+            this.label9.Text = "post-image (wp):";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1196, 573);
+            this.ClientSize = new System.Drawing.Size(996, 573);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.Button1);
@@ -610,6 +635,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.tabPage3.ResumeLayout(false);
+            this.tabPage3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -657,7 +688,6 @@
         private System.Windows.Forms.TextBox textTitle;
         private System.Windows.Forms.Button btnPost;
         private System.Windows.Forms.Button btnTitleToPost;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.CheckedListBox checkCat;
         private System.Windows.Forms.WebBrowser webPost;
         private System.Windows.Forms.TextBox txtPostImage;
@@ -668,6 +698,9 @@
         private System.Windows.Forms.TextBox textJPath;
         private System.Windows.Forms.TextBox textFactory;
         private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label9;
     }
 }
 
