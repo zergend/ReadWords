@@ -276,9 +276,9 @@ namespace ReadWords
             string[] px = { "700", "850", "960", "1024", "1280" };
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
-            string[] host = { "atkorablino.ru", "ddt/uoimp", "korablinorono" };
+            string[] host = { "korablinorono", "atkorablino", "ddt", "korablino62" };
             listHost.Items.AddRange(host);
-            listHost.SetSelected(2, true);
+            listHost.SetSelected(0, true);
 
             FileInfo fileInf = new FileInfo(@"C:\IrfanView\i_view32.exe");
             if (fileInf.Exists == false)
@@ -311,9 +311,10 @@ namespace ReadWords
             DateTime newsDate = new DateTime(1582, 10, 5);
             checkCat.Items.Clear(); // и заполняем новыми значениями            
 
-            switch (listHost.SelectedIndex)
+            switch (listHost.SelectedItem.ToString().ToLower())
             {
-                case 0: // atkorablino.ru
+                // "atkorablino", "ddt", "korablinorono", "korablino62"
+                case "atkorablino": // atkorablino.ru
                     textHost.Text = "ftp.atkorablin.nichost.ru";
                     textUname.Text = "atkorablin_ftp0419";
                     textPassword.Text = "vBgB0QVuoBvuP";
@@ -332,7 +333,7 @@ namespace ReadWords
                     checkCat.SetItemChecked(0, true);
 
                     break;
-                case 1: // ddt
+                case "ddt": // ddt
                     textHost.Text = "ftp.korablinod.nichost.ru";
                     textUname.Text = "korablinod_ftp";
                     textPassword.Text = "2ixh17bw";
@@ -346,7 +347,7 @@ namespace ReadWords
                     checkCat.Items.Add("Новости;20");
                     checkCat.SetItemChecked(0, true);
                     break;
-                case 2: // korablinorono
+                case "korablinorono": // korablinorono
                     textHost.Text = "ftp.korablino.nichost.ru";
                     textUname.Text = "korablino_ftpadmin";
                     textPassword.Text = "h/B5jiCQ";
@@ -364,7 +365,25 @@ namespace ReadWords
                     checkCat.SetItemChecked(0, true);
 
                     break;
-                case -1:
+                case "korablino62": // korablinorono
+                    textHost.Text = "s19.webhost1.ru";
+                    textUname.Text = "zergend_2018";
+                    textPassword.Text = "6W1fJRSlj4uWw";
+                    textPath.Text = "/korablino62.ru/photo/news";
+                    textPath.Text += DateTime.Now.ToString("-MM-yyyy") + "/";
+                    textPathPost.Text = "/korablino62.ru/";
+                    textOld.Text = "/korablino62.ru/";
+                    textNew.Text = "http://korablino62.ru/";
+                    textJPath.Text = "";
+                    textFactory.Text = "";
+                    // категории
+                    checkCat.Items.Add("Анонсы, объявления;82");
+                    checkCat.Items.Add("Росреестр;231");
+                    checkCat.Items.Add("КУМИиЗР;5");
+                    checkCat.SetItemChecked(0, true);
+
+                    break;
+                case "":
                     break;
                 default:
                     break;
@@ -467,15 +486,16 @@ namespace ReadWords
                     {
                         if ( title == 1 )
                         {
-                            textTitle.Text = textFromWordDocument.Trim();
-
+                            // Regex.Replace - заменяет двойные пробелы и разрывы строк на одинарный пробел
+                            textTitle.Text = System.Text.RegularExpressions.Regex.Replace(textFromWordDocument.Trim(), @"\s+", " ");                            
                             title = 2;
                         }
                         else
-                            html += "<p>" + textFromWordDocument.Trim() + "</p>\r\n";     
+                            // Regex.Replace - заменяет двойные пробелы и разрывы строк на одинарный пробел
+                            html += "<p>" + System.Text.RegularExpressions.Regex.Replace(textFromWordDocument.Trim(), @"\s+", " ") + "</p>\r\n";     
                     }
                 }
-                
+
                 textPost.Text = html + "\r\n" + textPost.Text;                
 
                 docs.Close(ref nullobject, ref nullobject, ref nullobject);
@@ -489,18 +509,21 @@ namespace ReadWords
         private void BtnPost_Click(object sender, EventArgs e)
         {
             string res = string.Empty;                
-            switch (listHost.SelectedIndex)
+            switch (listHost.SelectedItem.ToString().ToLower())
             {
-                case 0: // atkorablino.ru
+                case "atkorablino": 
                     res = PostPHP("joomla");
                     break;
-                case 1: // ddt
+                case "ddt": 
                     res = PostPHP("joomla");
                     break;
-                case 2: // korablinorono
+                case "korablinorono": 
                     res = PostPHP("wp");
                     break;
-                case -1:
+                case "korablino62":
+                    res = PostPHP("wp");
+                    break;
+                case "":
                     break;
                 default:
                     break;
