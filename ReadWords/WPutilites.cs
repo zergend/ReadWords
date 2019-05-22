@@ -65,7 +65,6 @@ namespace ReadWords
                         }
                         else
                         {
-                            //Console.WriteLine("Moving file {0}...", fileInfo.FullName);                            
                             // Upload file and remove original
                             session.PutFiles(fileInfo.FullName, remoteFilePath, true).Check();
                             res += remoteFilePath + "\r\n";
@@ -87,7 +86,6 @@ namespace ReadWords
                     res = replaceNew;
                 }
 
-
                 return r;
             }
             catch (Exception e)
@@ -95,11 +93,9 @@ namespace ReadWords
                 Console.WriteLine("Error: {0}", e);
                 return r;
             }
-            // MessageBox.Show("Загрузили");
-
         }
 
-        // PublicPostToWordpressJoomla
+        // Upload file to ftp
         public static string UploadPHP(string localFile, 
                                 string hN, 
                                 string uN,

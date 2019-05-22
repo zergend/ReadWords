@@ -185,6 +185,7 @@ namespace ReadWords
             textBox1.Text = listBox1.SelectedItem.ToString();
         }
 
+        /*
         private void Button3_Click(object sender, EventArgs e)
         {            
             if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) 
@@ -194,10 +195,9 @@ namespace ReadWords
                 listBox2.Items.Clear();
                 foreach (string s in htmlAT)
                     listBox2.Items.Add(s);                   
-                // MessageBox.Show("всё закончилось!");
-            }
-            
+            }            
         }
+        */
 
         private void ListBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -234,22 +234,19 @@ namespace ReadWords
             labelDrop.Text = "Папка/файлы приняты";
             DateTime someDate = new DateTime(1582, 10, 5);
             textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
-            // List<string> paths = new List<string>();
+
             foreach (string obj in (string[])e.Data.GetData(DataFormats.FileDrop))
                 if (Directory.Exists(obj))
                 {
-                    // paths.AddRange(Directory.GetFiles(obj, "*.*", SearchOption.TopDirectoryOnly));
                     textFolderAT.Text = obj;
                     string[] htmlAT = WPutilites.toAT(obj);
                     listBox2.Items.Clear();
                     foreach (string s in htmlAT)
                         listBox2.Items.Add(s);
-                    //stBox2.Items.Add(obj);
                 }
                 else
                 {
                     listBox2.Items.Add(obj);
-                    // paths.Add(obj);
                 }
             try
             {
@@ -397,6 +394,7 @@ namespace ReadWords
                 string s = string.Empty;
                 string dirName = textFolderAT.Text;
                 string newFolder = textFolderAT.Text;
+                textFileName.Text = Transliteration.Front(textFileName.Text).ToLower();
                 ProcessStartInfo psi = new ProcessStartInfo();
                 //Имя запускаемого приложения
                 psi.FileName = @"C:\IrfanView\i_view32.exe";
@@ -530,13 +528,16 @@ namespace ReadWords
             }
             // MessageBox.Show(res);
             labelDrop.Text = "Перетащите сюда папку и/или файлы. Щелчок - выбор папки.";
-            listBox2.Items.Clear();
-            textFolderAT.Text = "";
-            textFileName.Text = "";
+            if (checkClearList.CheckState == CheckState.Checked)
+            {
+                listBox2.Items.Clear();
+                textFolderAT.Text = "";
+                textFileName.Text = "";
+            }
             textTitle.Text = "";
-            textPost.Text = res;
+            textPost.Text = "";
             txtPostImage.Text = "";
-            textBox2.Text = "";
+            textBox2.Text = res;
         }
 
         string PostPHP(string cms)
@@ -581,17 +582,18 @@ namespace ReadWords
                     foreach (object item in checkCat.CheckedItems)
                     {
                         cats = item.ToString().Split(';');
-                        catToPHP = cats[1]; // в Joomla можно опубликовать материал только в одной категории
+                        catToPHP = cats[1]; 
 
+                        // заменим двойные кавычки в тексте на одинарные (экранированные для БД), 
+                        // т.к. двойные вызывают ошибку? при запросе к БД
+                        textPost.Text = textPost.Text.Replace("\"", "''");
                         //формируем php-файл для публикации поста на Joomla
                         php = ReadWords.Properties.Resources.post_joomla; //post_joomla.txt в ресурсах
                         php = php.Replace("###jpath###", textJPath.Text);
                         php = php.Replace("###factory###", textFactory.Text);
                         php = php.Replace("###title###", textTitle.Text);
-                        php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + "_" + catToPHP);
-                        // заменим двойные кавычки в тексте на одинарные (экранированные для БД), 
-                        // т.к. двойные вызывают ошибку при запросе к БД
-                        php = php.Replace("###introtext###", textPost.Text.Replace("\"", "''"));
+                        php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + "_" + catToPHP);                        
+                        php = php.Replace("###introtext###", textPost.Text);
 
                         if (checkDraft.CheckState == CheckState.Checked)
                             php = php.Replace("###state###", "0");
@@ -599,11 +601,13 @@ namespace ReadWords
                             php = php.Replace("###state###", "1");
 
                         php = php.Replace("###catid###", catToPHP);
-                        //php = php.Replace(@""", "\"");                        
 
                         writeFile = WritePhp(php);
-                    }                             
- 
+                        // в Joomla можно опубликовать материал только в одной категории
+                        // поэтому, сразу выходим, публикуем только в одной категории (первой в списке)
+                        break;
+                    }
+
                     break;
                 default:
                     break;
@@ -618,15 +622,13 @@ namespace ReadWords
             {
                 webPost.Navigate(urlSite + phpFile);
                 // а теперь загрузим повторно "пустой" файл
-
-                /* writeFile = WritePhp("<h1>hello, world!</h1>");
+                writeFile = WritePhp("<h1>hello, world!</h1>");
 
                 res = WPutilites.UploadPHP(writeFile,
                                       textHost.Text,
                                       textUname.Text,
                                       textPassword.Text,
-                                      textPathPost.Text);
-                */
+                                      textPathPost.Text);                
 
                 // MessageBox.Show("Черновик Поста подготовлен!");
             }
@@ -693,6 +695,12 @@ namespace ReadWords
         private void WebPost_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             MessageBox.Show(webPost.DocumentText); 
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            textTitle.Text = "";
+            textPost.Text = "";
         }
     }     
 }
