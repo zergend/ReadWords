@@ -100,7 +100,8 @@ namespace ReadWords
                                 string hN, 
                                 string uN,
                                 string pW,
-                                string remotePath)
+                                string remotePath, 
+                                bool removeFile = false)
         {
             string res = string.Empty;
             try
@@ -123,6 +124,20 @@ namespace ReadWords
                     // Connect
                     session.Open(sessionOptions);
 
+                    if (removeFile)
+                    {
+                        // удалим файл
+                        RemovalOperationResult removeResult;
+                        removeResult = session.RemoveFiles(remotePath + localFile);
+
+                        if (removeResult.IsSuccess)
+                            res = remotePath + localFile + " file deleted";
+                        else
+                            res = remotePath + localFile + "file NOT deleted";
+
+                        return res;
+                    }
+
                     // Upload files
                     TransferOptions transferOptions = new TransferOptions();
                     transferOptions.TransferMode = TransferMode.Binary;
@@ -134,12 +149,15 @@ namespace ReadWords
                     // Throw on any error
                     transferResult.Check();
 
-                    // Print results
-                    foreach (TransferEventArgs transfer in transferResult.Transfers)
+                    if (transferResult.IsSuccess)
                     {
-                        Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
-                        res = transfer.FileName;
-                    }                                      
+                        // Print results
+                        foreach (TransferEventArgs transfer in transferResult.Transfers)
+                        {
+                            // Console.WriteLine("Upload of {0} succeeded", transfer.FileName);
+                            res = transfer.FileName;
+                        }
+                    }
                 }
 
                 return res;

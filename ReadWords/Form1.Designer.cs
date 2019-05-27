@@ -37,6 +37,8 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.checkClearList = new System.Windows.Forms.CheckBox();
+            this.btnClear = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
             this.btnTransFN = new System.Windows.Forms.Button();
             this.checkDraft = new System.Windows.Forms.CheckBox();
@@ -82,8 +84,8 @@
             this.textPathPost = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.btnClear = new System.Windows.Forms.Button();
-            this.checkClearList = new System.Windows.Forms.CheckBox();
+            this.textPHPfileName = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -200,6 +202,28 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Ресайз/загрузка на FTP";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // checkClearList
+            // 
+            this.checkClearList.AutoSize = true;
+            this.checkClearList.Checked = true;
+            this.checkClearList.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkClearList.Location = new System.Drawing.Point(270, 329);
+            this.checkClearList.Name = "checkClearList";
+            this.checkClearList.Size = new System.Drawing.Size(73, 17);
+            this.checkClearList.TabIndex = 40;
+            this.checkClearList.Text = "< clear list";
+            this.checkClearList.UseVisualStyleBackColor = true;
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(436, 325);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.TabIndex = 39;
+            this.btnClear.Text = "Clear >";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // label9
             // 
@@ -442,6 +466,8 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.Controls.Add(this.label11);
+            this.tabPage3.Controls.Add(this.textPHPfileName);
             this.tabPage3.Controls.Add(this.groupBox3);
             this.tabPage3.Controls.Add(this.groupBox2);
             this.tabPage3.Controls.Add(this.groupBox1);
@@ -619,27 +645,22 @@
             this.label7.TabIndex = 25;
             this.label7.Text = "remote Path to Upload (php):";
             // 
-            // btnClear
+            // textPHPfileName
             // 
-            this.btnClear.Location = new System.Drawing.Point(436, 325);
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
-            this.btnClear.TabIndex = 39;
-            this.btnClear.Text = "Clear >";
-            this.btnClear.UseVisualStyleBackColor = true;
-            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            this.textPHPfileName.Location = new System.Drawing.Point(258, 215);
+            this.textPHPfileName.Name = "textPHPfileName";
+            this.textPHPfileName.Size = new System.Drawing.Size(242, 20);
+            this.textPHPfileName.TabIndex = 39;
+            this.textPHPfileName.Text = "post_me.php";
             // 
-            // checkClearList
+            // label11
             // 
-            this.checkClearList.AutoSize = true;
-            this.checkClearList.Checked = true;
-            this.checkClearList.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkClearList.Location = new System.Drawing.Point(270, 329);
-            this.checkClearList.Name = "checkClearList";
-            this.checkClearList.Size = new System.Drawing.Size(73, 17);
-            this.checkClearList.TabIndex = 40;
-            this.checkClearList.Text = "< clear list";
-            this.checkClearList.UseVisualStyleBackColor = true;
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(258, 199);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 13);
+            this.label11.TabIndex = 40;
+            this.label11.Text = "PHP filename:";
             // 
             // Form1
             // 
@@ -729,6 +750,8 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.CheckBox checkClearList;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox textPHPfileName;
     }
 }
 

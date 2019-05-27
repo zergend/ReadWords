@@ -544,7 +544,7 @@ namespace ReadWords
         {            
             string writeFile = string.Empty;
             string urlSite = textNew.Text;
-            string phpFile = "post_me.php";
+            string phpFile = textPHPfileName.Text;
             string res = string.Empty;
             string php = string.Empty;
             
@@ -621,14 +621,14 @@ namespace ReadWords
             if (res != string.Empty)
             {
                 webPost.Navigate(urlSite + phpFile);
-                // а теперь загрузим повторно "пустой" файл
-                writeFile = WritePhp("<h1>hello, world!</h1>");
 
-                res = WPutilites.UploadPHP(writeFile,
-                                      textHost.Text,
-                                      textUname.Text,
-                                      textPassword.Text,
-                                      textPathPost.Text);                
+                res += " published \r\n";
+                //удалим файл с фтп
+                res += WPutilites.UploadPHP(phpFile,
+                                  textHost.Text,
+                                  textUname.Text,
+                                  textPassword.Text,
+                                  textPathPost.Text, true);
 
                 // MessageBox.Show("Черновик Поста подготовлен!");
             }
@@ -637,22 +637,22 @@ namespace ReadWords
                 MessageBox.Show("Пост NOT опубликован!");
             }
 
+            MessageBox.Show(res);
             return res;
         }
 
         string WritePhp(string php)
         {
             string writeFile = string.Empty;
-            string phpFile = "post_me.php";
+            string phpFile = textPHPfileName.Text;
             string dirName = textFolderAT.Text;
             string subDirName = @"\uppost\";
             string subDir = @"uppost";
 
             DirectoryInfo dirInfo = new DirectoryInfo(dirName);
             if (!dirInfo.Exists)
-            {
                 dirInfo.Create();
-            }
+
             dirInfo.CreateSubdirectory(subDir);
 
             if (Directory.Exists(dirName + subDirName))
