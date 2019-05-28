@@ -131,10 +131,11 @@ namespace ReadWords
                         removeResult = session.RemoveFiles(remotePath + localFile);
 
                         if (removeResult.IsSuccess)
-                            res = remotePath + localFile + " file deleted";
+                            res = remotePath + localFile + "\r\nfile deleted";
                         else
-                            res = remotePath + localFile + "file NOT deleted";
+                            res = remotePath + localFile + "\r\nfile NOT deleted";
 
+                        session.Close();
                         return res;
                     }
 
@@ -158,8 +159,9 @@ namespace ReadWords
                             res = transfer.FileName;
                         }
                     }
+                    session.Close();
                 }
-
+                
                 return res;
             }
             catch (Exception e)

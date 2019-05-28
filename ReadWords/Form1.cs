@@ -232,6 +232,8 @@ namespace ReadWords
         void Panel1_DragDrop(object sender, DragEventArgs e)
         {            
             labelDrop.Text = "Папка/файлы приняты";
+            textFolderAT.Text = "";
+            listBox2.Items.Clear();
             DateTime someDate = new DateTime(1582, 10, 5);
             textFileName.Text = DateTime.Now.ToString("yyyy-MM-dd_HHmmss_");
 
@@ -623,12 +625,6 @@ namespace ReadWords
                 webPost.Navigate(urlSite + phpFile);
 
                 res += " published \r\n";
-                //удалим файл с фтп
-                res += WPutilites.UploadPHP(phpFile,
-                                  textHost.Text,
-                                  textUname.Text,
-                                  textPassword.Text,
-                                  textPathPost.Text, true);
 
                 // MessageBox.Show("Черновик Поста подготовлен!");
             }
@@ -667,6 +663,7 @@ namespace ReadWords
                 using (StreamWriter sw = new StreamWriter(writeFile, true, new System.Text.UTF8Encoding(false)))
                 {
                     sw.Write(php);
+                    //sw.Close();
                 }
             }
 
@@ -701,6 +698,18 @@ namespace ReadWords
         {
             textTitle.Text = "";
             textPost.Text = "";
+        }
+
+        private void ButtonDelPhp_Click(object sender, EventArgs e)
+        {
+            string res;
+            //удалим файл с фтп
+            res = WPutilites.UploadPHP(textPHPfileName.Text,
+                              textHost.Text,
+                              textUname.Text,
+                              textPassword.Text,
+                              textPathPost.Text, true);
+            MessageBox.Show(res);
         }
     }     
 }

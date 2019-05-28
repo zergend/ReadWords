@@ -65,6 +65,8 @@
             this.textFolderAT = new System.Windows.Forms.TextBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.label11 = new System.Windows.Forms.Label();
+            this.textPHPfileName = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
             this.textOld = new System.Windows.Forms.TextBox();
@@ -84,8 +86,7 @@
             this.textPathPost = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.textPHPfileName = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
+            this.buttonDelPhp = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -170,6 +171,7 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.buttonDelPhp);
             this.tabPage1.Controls.Add(this.checkClearList);
             this.tabPage1.Controls.Add(this.btnClear);
             this.tabPage1.Controls.Add(this.label9);
@@ -200,7 +202,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(967, 476);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Ресайз/загрузка на FTP";
+            this.tabPage1.Text = "Ресайз / загрузка на FTP / публикация";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // checkClearList
@@ -217,9 +219,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(436, 325);
+            this.btnClear.Location = new System.Drawing.Point(349, 290);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(75, 23);
+            this.btnClear.Size = new System.Drawing.Size(162, 23);
             this.btnClear.TabIndex = 39;
             this.btnClear.Text = "Clear >";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -481,6 +483,23 @@
             this.tabPage3.Text = "Settings";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(258, 199);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(74, 13);
+            this.label11.TabIndex = 40;
+            this.label11.Text = "PHP filename:";
+            // 
+            // textPHPfileName
+            // 
+            this.textPHPfileName.Location = new System.Drawing.Point(258, 215);
+            this.textPHPfileName.Name = "textPHPfileName";
+            this.textPHPfileName.Size = new System.Drawing.Size(242, 20);
+            this.textPHPfileName.TabIndex = 39;
+            this.textPHPfileName.Text = "post_me.php";
+            // 
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.label6);
@@ -645,22 +664,18 @@
             this.label7.TabIndex = 25;
             this.label7.Text = "remote Path to Upload (php):";
             // 
-            // textPHPfileName
+            // buttonDelPhp
             // 
-            this.textPHPfileName.Location = new System.Drawing.Point(258, 215);
-            this.textPHPfileName.Name = "textPHPfileName";
-            this.textPHPfileName.Size = new System.Drawing.Size(242, 20);
-            this.textPHPfileName.TabIndex = 39;
-            this.textPHPfileName.Text = "post_me.php";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(258, 199);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(74, 13);
-            this.label11.TabIndex = 40;
-            this.label11.Text = "PHP filename:";
+            this.buttonDelPhp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDelPhp.ForeColor = System.Drawing.Color.Crimson;
+            this.buttonDelPhp.Location = new System.Drawing.Point(349, 325);
+            this.buttonDelPhp.Name = "buttonDelPhp";
+            this.buttonDelPhp.Size = new System.Drawing.Size(162, 23);
+            this.buttonDelPhp.TabIndex = 41;
+            this.buttonDelPhp.Tag = "";
+            this.buttonDelPhp.Text = "delete php-file from ftp";
+            this.buttonDelPhp.UseVisualStyleBackColor = true;
+            this.buttonDelPhp.Click += new System.EventHandler(this.ButtonDelPhp_Click);
             // 
             // Form1
             // 
@@ -752,6 +767,7 @@
         private System.Windows.Forms.CheckBox checkClearList;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textPHPfileName;
+        private System.Windows.Forms.Button buttonDelPhp;
     }
 }
 
