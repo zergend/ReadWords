@@ -18,6 +18,8 @@ namespace ReadWords
 {
     public partial class Form1 : Form
     {
+        // массив для хранения файлов, которые нужно удалить с серверов
+        static string[] deletePHP;
         public Form1()
         {
             InitializeComponent();            
@@ -276,6 +278,7 @@ namespace ReadWords
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
             string[] host = { "korablinorono", "atkorablino", "ddt", "korablino62" };
+            deletePHP = { "","","" };
             listHost.Items.AddRange(host);
             listHost.SetSelected(0, true);
 
@@ -710,6 +713,20 @@ namespace ReadWords
                               textPassword.Text,
                               textPathPost.Text, true);
             MessageBox.Show(res);
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            DialogResult result = MessageBox.Show(
+                "Удалить все загруженные по FTP php-файлы?",
+                "Удаление php-файлов",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1,
+                MessageBoxOptions.DefaultDesktopOnly);
+
+            if (result == DialogResult.Yes)
+                MessageBox.Show("Удалено");             
         }
     }     
 }

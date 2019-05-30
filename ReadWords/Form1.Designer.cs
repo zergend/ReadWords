@@ -37,6 +37,7 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.buttonDelPhp = new System.Windows.Forms.Button();
             this.checkClearList = new System.Windows.Forms.CheckBox();
             this.btnClear = new System.Windows.Forms.Button();
             this.label9 = new System.Windows.Forms.Label();
@@ -86,7 +87,6 @@
             this.textPathPost = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
-            this.buttonDelPhp = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -204,6 +204,19 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Ресайз / загрузка на FTP / публикация";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // buttonDelPhp
+            // 
+            this.buttonDelPhp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.buttonDelPhp.ForeColor = System.Drawing.Color.Crimson;
+            this.buttonDelPhp.Location = new System.Drawing.Point(349, 325);
+            this.buttonDelPhp.Name = "buttonDelPhp";
+            this.buttonDelPhp.Size = new System.Drawing.Size(162, 23);
+            this.buttonDelPhp.TabIndex = 41;
+            this.buttonDelPhp.Tag = "";
+            this.buttonDelPhp.Text = "delete php-file from ftp";
+            this.buttonDelPhp.UseVisualStyleBackColor = true;
+            this.buttonDelPhp.Click += new System.EventHandler(this.ButtonDelPhp_Click);
             // 
             // checkClearList
             // 
@@ -664,19 +677,6 @@
             this.label7.TabIndex = 25;
             this.label7.Text = "remote Path to Upload (php):";
             // 
-            // buttonDelPhp
-            // 
-            this.buttonDelPhp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.buttonDelPhp.ForeColor = System.Drawing.Color.Crimson;
-            this.buttonDelPhp.Location = new System.Drawing.Point(349, 325);
-            this.buttonDelPhp.Name = "buttonDelPhp";
-            this.buttonDelPhp.Size = new System.Drawing.Size(162, 23);
-            this.buttonDelPhp.TabIndex = 41;
-            this.buttonDelPhp.Tag = "";
-            this.buttonDelPhp.Text = "delete php-file from ftp";
-            this.buttonDelPhp.UseVisualStyleBackColor = true;
-            this.buttonDelPhp.Click += new System.EventHandler(this.ButtonDelPhp_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -687,6 +687,7 @@
             this.Name = "Form1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ReadWords";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
