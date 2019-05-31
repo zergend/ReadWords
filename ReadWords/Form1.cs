@@ -19,7 +19,7 @@ namespace ReadWords
     public partial class Form1 : Form
     {
         // массив для хранения файлов, которые нужно удалить с серверов
-        static string[] deletePHP;
+        // static string[] deletePHP;
         public Form1()
         {
             InitializeComponent();            
@@ -278,7 +278,7 @@ namespace ReadWords
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
             string[] host = { "korablinorono", "atkorablino", "ddt", "korablino62" };
-            deletePHP = { "","","" };
+            // deletePHP = { "","","" };
             listHost.Items.AddRange(host);
             listHost.SetSelected(0, true);
 
