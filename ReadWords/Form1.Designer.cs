@@ -300,7 +300,6 @@
             // 
             // btnPost
             // 
-            this.btnPost.Enabled = false;
             this.btnPost.Location = new System.Drawing.Point(870, 445);
             this.btnPost.Name = "btnPost";
             this.btnPost.Size = new System.Drawing.Size(91, 23);

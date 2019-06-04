@@ -273,7 +273,7 @@ namespace ReadWords
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            btnPreparePost.Enabled = false;
+            // btnPreparePost.Enabled = false;
             string[] px = { "700", "850", "960", "1024", "1280" };
             listWidth.Items.AddRange(px);
             listWidth.SetSelected(1, true);
@@ -505,7 +505,7 @@ namespace ReadWords
                 wordobject.Quit(ref nullobject, ref nullobject, ref nullobject);
 
                 // MessageBox.Show("html prepare!");
-                btnPost.Enabled = true;
+                // btnPost.Enabled = true;
             }
         }
 
@@ -597,7 +597,9 @@ namespace ReadWords
                         php = php.Replace("###jpath###", textJPath.Text);
                         php = php.Replace("###factory###", textFactory.Text);
                         php = php.Replace("###title###", textTitle.Text);
-                        php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + "_" + catToPHP);                        
+                        php = php.Replace("###alias###", Transliteration.Front(textTitle.Text).ToLower() + 
+                                            "_" + catToPHP + "_" + DateTime.Now.ToString("yyyy-MM-dd_HHmmss"));
+                        
                         php = php.Replace("###introtext###", textPost.Text);
 
                         if (checkDraft.CheckState == CheckState.Checked)
