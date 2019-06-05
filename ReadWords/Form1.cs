@@ -332,6 +332,7 @@ namespace ReadWords
                     checkCat.Items.Add("Конкурсы (методработа);48");
                     checkCat.Items.Add("Открытые уроки и внеклассные мероприятия;29");
                     checkCat.Items.Add("Вебинары;71");
+                    checkCat.Items.Add("Публикации;78");
                     checkCat.SetItemChecked(0, true);
 
                     break;
@@ -608,6 +609,9 @@ namespace ReadWords
                             php = php.Replace("###state###", "1");
 
                         php = php.Replace("###catid###", catToPHP);
+                        php = php.Replace("###created_by###", "878");
+                        php = php.Replace("###language###", "*");
+                        php = php.Replace("###access###", "1");                        
 
                         writeFile = WritePhp(php);
                         // в Joomla можно опубликовать материал только в одной категории

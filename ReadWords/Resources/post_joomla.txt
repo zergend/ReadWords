@@ -33,7 +33,7 @@ state (int) - 1 - опубликовано, 0 - не опубликовано
 catid (int) - id категории
 */
 
-$query = "INSERT INTO #__content (`title`, `alias`, `introtext`, `state`, `catid`, `created`, `publish_up`) VALUES ('###title###', '###alias###', '###introtext###', ###state###, ###catid###, '" . $publish . "', '" . $publish . "')"; 
+$query = "INSERT INTO #__content (`title`, `alias`, `introtext`, `state`, `catid`, `created_by`, `language`, `access`, `created`, `publish_up`) VALUES ('###title###', '###alias###', '###introtext###', ###state###, ###catid###, ###created_by###, '###language###', ###access###, '" . $publish . "', '" . $publish . "')"; 
 
 $db->setQuery($query);
 $db->query(); // выполнить запрос
