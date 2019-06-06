@@ -734,5 +734,25 @@ namespace ReadWords
             if (result == DialogResult.Yes)
                 MessageBox.Show("Удалено");             
         }
+
+        private void BtnImgsrc_Click(object sender, EventArgs e)
+        {
+            _ = RequestAsync(textLoginImgsrc.Text, textPasswordImgsrc.Text);
+        }
+
+        private static async Task RequestAsync(string login, string password)
+        {
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://imgsrc.ru/main/login.php");
+            request.Credentials = new NetworkCredential(login, password);
+            HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
+
+            WebHeaderCollection headers = response.Headers;
+            for (int i = 0; i < headers.Count; i++)
+            {
+                Console.WriteLine("imgsrc");
+                Console.WriteLine("{0}: {1}", headers.GetKey(i), headers[i]);
+            }
+            response.Close();
+        }
     }     
 }

@@ -87,6 +87,11 @@
             this.textPathPost = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.textLoginImgsrc = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.textPasswordImgsrc = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.btnImgsrc = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -465,6 +470,11 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.btnImgsrc);
+            this.tabPage2.Controls.Add(this.label13);
+            this.tabPage2.Controls.Add(this.textPasswordImgsrc);
+            this.tabPage2.Controls.Add(this.label12);
+            this.tabPage2.Controls.Add(this.textLoginImgsrc);
             this.tabPage2.Controls.Add(this.textBox);
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.Button1);
@@ -676,6 +686,50 @@
             this.label7.TabIndex = 25;
             this.label7.Text = "remote Path to Upload (php):";
             // 
+            // textLoginImgsrc
+            // 
+            this.textLoginImgsrc.Location = new System.Drawing.Point(342, 228);
+            this.textLoginImgsrc.Name = "textLoginImgsrc";
+            this.textLoginImgsrc.Size = new System.Drawing.Size(132, 20);
+            this.textLoginImgsrc.TabIndex = 11;
+            this.textLoginImgsrc.Text = "korablino62";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(342, 209);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(62, 13);
+            this.label12.TabIndex = 12;
+            this.label12.Text = "login imgsrc";
+            // 
+            // textPasswordImgsrc
+            // 
+            this.textPasswordImgsrc.Location = new System.Drawing.Point(342, 275);
+            this.textPasswordImgsrc.Name = "textPasswordImgsrc";
+            this.textPasswordImgsrc.Size = new System.Drawing.Size(132, 20);
+            this.textPasswordImgsrc.TabIndex = 13;
+            this.textPasswordImgsrc.Text = "27f272d1";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(342, 256);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(52, 13);
+            this.label13.TabIndex = 14;
+            this.label13.Text = "password";
+            // 
+            // btnImgsrc
+            // 
+            this.btnImgsrc.Location = new System.Drawing.Point(518, 272);
+            this.btnImgsrc.Name = "btnImgsrc";
+            this.btnImgsrc.Size = new System.Drawing.Size(75, 23);
+            this.btnImgsrc.TabIndex = 15;
+            this.btnImgsrc.Text = "imgsrc";
+            this.btnImgsrc.UseVisualStyleBackColor = true;
+            this.btnImgsrc.Click += new System.EventHandler(this.BtnImgsrc_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -768,6 +822,11 @@
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TextBox textPHPfileName;
         private System.Windows.Forms.Button buttonDelPhp;
+        private System.Windows.Forms.Button btnImgsrc;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox textPasswordImgsrc;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox textLoginImgsrc;
     }
 }
 
