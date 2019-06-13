@@ -13,6 +13,9 @@ using System.Windows.Forms;
 using YandexDiskNET;
 using System.Diagnostics;
 using System.Net;
+//using System.Web;
+using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace ReadWords
 {
@@ -735,13 +738,15 @@ namespace ReadWords
                 MessageBox.Show("Удалено");             
         }
 
-        private void BtnImgsrc_Click(object sender, EventArgs e)
+        private async void BtnImgsrc_Click(object sender, EventArgs e)
         {
-            _ = RequestAsync(textLoginImgsrc.Text, textPasswordImgsrc.Text);
+            string s = await RequestAsync(textLoginImgsrc.Text, textPasswordImgsrc.Text);
+            textBox.Text = s;
         }
 
-        private static async Task RequestAsync(string login, string password)
+        private static async Task<string> RequestAsync(string login, string password)
         {
+            /* 
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create("https://imgsrc.ru/main/login.php");
             request.Credentials = new NetworkCredential(login, password);
             HttpWebResponse response = (HttpWebResponse)await request.GetResponseAsync();
@@ -753,6 +758,39 @@ namespace ReadWords
                 Console.WriteLine("{0}: {1}", headers.GetKey(i), headers[i]);
             }
             response.Close();
+            */
+            /////////////////////
+            HttpClient h = new HttpClient();
+
+            Dictionary<string, string> values = new Dictionary<string, string>
+            {
+                { "login", "korablino62" },
+                { "pass", "27f272d1" } //,
+                //{ "cnt", "%2Fmembers%2Findex.php%3Fnc%3D1560413876" }
+            };            
+
+            var content = new FormUrlEncodedContent(values);
+            var response = await h.PostAsync("https://imgsrc.ru/main/login.php", content);
+
+            h.DefaultRequestHeaders.Add("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3");
+            h.DefaultRequestHeaders.Add("Accept-Language", "ru,en;q=0.9,la;q=0.8,cs;q=0.7,ba;q=0.6");
+            h.DefaultRequestHeaders.Add("Accept-Encoding", "gzip, deflate, br");
+            h.DefaultRequestHeaders.Add("Cache-Control", "no-cache");
+            //h.DefaultRequestHeaders.Add("Content-Type", "application/x-www-form-urlencoded");
+            h.DefaultRequestHeaders.Add("Connection", "keep-alive");
+            h.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));            
+            h.DefaultRequestHeaders.Add("Origin", "https://imgsrc.ru");
+            h.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.169 YaBrowser/19.6.0.1574 Yowser/2.5 Safari/537.36");
+            h.DefaultRequestHeaders.Add("Referer", "https://imgsrc.ru/main/login.php");
+            h.DefaultRequestHeaders.Add("Host", "www.imgsrc.ru");
+            h.DefaultRequestHeaders.Add("Accept-Charset", "ISO-8859-1");
+         
+
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            //HttpCookieCollection oCookies = Request.Cookies;
+
+            return responseString;
         }
     }     
 }
