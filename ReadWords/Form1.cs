@@ -384,8 +384,13 @@ namespace ReadWords
                     textFactory.Text = "";
                     // категории
                     checkCat.Items.Add("Анонсы, объявления;82");
+                    checkCat.Items.Add("Новости;96");
+                    checkCat.Items.Add("Новости спорта;139");
+                    checkCat.Items.Add("Новости культуры;64");
+                    checkCat.Items.Add("Новости образования;53");
                     checkCat.Items.Add("Росреестр;231");
                     checkCat.Items.Add("КУМИиЗР;5");
+                    checkCat.Items.Add("Экология;145");
                     checkCat.SetItemChecked(0, true);
 
                     break;
